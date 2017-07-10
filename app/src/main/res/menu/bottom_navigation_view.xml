@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/feature"
+        android:icon="@mipmap/ic_launcher"
+        android:title="精选" />
+
+    <item
+        android:id="@+id/favor"
+        android:icon="@mipmap/ic_launcher"
+        android:title="帮忙" />
+
+    <item
+        android:id="@+id/order"
+        android:icon="@mipmap/ic_launcher"
+        android:title="下单" />
+
+    <item
+        android:id="@+id/chats"
+        android:icon="@mipmap/ic_launcher"
+        android:title="消息" />
+
+    <item
+        android:id="@+id/me"
+        android:icon="@mipmap/ic_launcher"
+        android:title="我的" />
+
+</menu>
