@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -32,7 +33,7 @@ import static android.content.Context.SEARCH_SERVICE;
  * 精选
  */
 
-public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, SearchView.OnQueryTextListener {
+public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, SearchView.OnQueryTextListener {
 
     public static final String ARGUMENT = "argument";
 
@@ -40,6 +41,7 @@ public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implem
     private Toolbar toolbar;
     private TextView toolbarTitle;
     private Banner banner;
+    private RecyclerView recyclerView;
     private SearchView searchView;
 
     private List<String> urlList = new ArrayList<>();
@@ -87,6 +89,7 @@ public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implem
                 Glide.with(context).load(path).into(imageView);
             }
         }).start();
+        recyclerView = bindingView.recyclerView;
     }
 
     @Override
@@ -106,6 +109,15 @@ public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implem
     }
 
     @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.toolbar_title:
+                ChooseAreaActivity.start(getActivity());
+                break;
+        }
+    }
+
+    @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
     }
@@ -113,15 +125,6 @@ public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implem
     @Override
     public boolean onQueryTextChange(String newText) {
         return false;
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.toolbar_title:
-                ChooseAreaActivity.start(getActivity());
-                break;
-        }
     }
 
 }
