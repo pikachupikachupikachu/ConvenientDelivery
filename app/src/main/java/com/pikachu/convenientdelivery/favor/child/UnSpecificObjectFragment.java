@@ -10,7 +10,7 @@ import com.pikachu.convenientdelivery.base.BaseFragment;
 import com.pikachu.convenientdelivery.databinding.FragmentUnspecificObjectBinding;
 
 /**
- * Created by yqhok on 7/11/2017.
+ * 物品待定
  */
 
 public class UnSpecificObjectFragment extends BaseFragment<FragmentUnspecificObjectBinding> implements SwipeRefreshLayout.OnRefreshListener {

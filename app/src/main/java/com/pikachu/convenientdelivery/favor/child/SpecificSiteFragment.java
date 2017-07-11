@@ -10,7 +10,7 @@ import com.pikachu.convenientdelivery.base.BaseFragment;
 import com.pikachu.convenientdelivery.databinding.FragmentSpecificSiteBinding;
 
 /**
- * Created by yqhok on 7/11/2017.
+ * 地点明确
  */
 
 public class SpecificSiteFragment extends BaseFragment<FragmentSpecificSiteBinding> implements SwipeRefreshLayout.OnRefreshListener {

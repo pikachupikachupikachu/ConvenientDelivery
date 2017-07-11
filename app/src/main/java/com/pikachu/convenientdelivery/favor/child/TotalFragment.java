@@ -10,7 +10,7 @@ import com.pikachu.convenientdelivery.base.BaseFragment;
 import com.pikachu.convenientdelivery.databinding.FragmentTotalBinding;
 
 /**
- * Created by yqhok on 7/11/2017.
+ * 全部
  */
 
 public class TotalFragment extends BaseFragment<FragmentTotalBinding> implements SwipeRefreshLayout.OnRefreshListener {
