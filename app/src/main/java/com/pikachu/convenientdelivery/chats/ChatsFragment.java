@@ -1,14 +1,17 @@
 package com.pikachu.convenientdelivery.chats;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.pikachu.convenientdelivery.R;
@@ -26,6 +29,8 @@ public class ChatsFragment extends BaseFragment<FragmentChatsBinding> implements
     private SwipeRefreshLayout swipeRefreshLayout;
     private Toolbar toolbar;
     private RadioGroup radioGroup;
+    private RadioButton message;
+    private RadioButton friend;
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
 
@@ -61,6 +66,8 @@ public class ChatsFragment extends BaseFragment<FragmentChatsBinding> implements
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         radioGroup = bindingView.radioGroup;
         radioGroup.setOnCheckedChangeListener(this);
+        message = bindingView.message;
+        friend = bindingView.friend;
         recyclerView = bindingView.recyclerView;
         fab = bindingView.fab;
         fab.setOnClickListener(this);

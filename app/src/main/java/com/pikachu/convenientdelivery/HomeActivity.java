@@ -116,7 +116,6 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
                 featureFragment.onRefresh();
                 break;
             case R.id.favor:
-                favorFragment.onRefresh();
                 break;
             case R.id.order:
                 orderFragment.onRefresh();

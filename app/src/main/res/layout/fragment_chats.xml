@@ -29,23 +29,28 @@
                     <RadioButton
                         android:id="@+id/message"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginRight="5dp"
+                        android:padding="8dp"
                         android:button="@null"
+                        android:background="@drawable/chats_message_bg"
                         android:text="消息"
                         android:textSize="18sp"
-                        android:gravity="center" />
+                        android:textColor="@drawable/chats_message_text_color"
+                        android:gravity="center"
+                        android:checked="true"/>
 
                     <RadioButton
                         android:id="@+id/friend"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginLeft="5dp"
+                        android:padding="8dp"
                         android:button="@null"
+                        android:background="@drawable/chats_friend_bg"
                         android:text="好友"
                         android:textSize="18sp"
+                        android:textColor="@drawable/chats_friend_text_color"
                         android:gravity="center" />
 
                 </RadioGroup>

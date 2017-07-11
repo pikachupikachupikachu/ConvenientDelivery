@@ -3,10 +3,12 @@ package com.pikachu.convenientdelivery.favor;
 import android.app.SearchManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,7 +19,14 @@ import android.widget.TextView;
 import com.pikachu.convenientdelivery.ChooseAreaActivity;
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.BaseFragment;
+import com.pikachu.convenientdelivery.base.adapter.BaseFragmentPagerAdapter;
 import com.pikachu.convenientdelivery.databinding.FragmentFavorBinding;
+import com.pikachu.convenientdelivery.favor.child.SpecificObjectFragment;
+import com.pikachu.convenientdelivery.favor.child.SpecificSiteFragment;
+import com.pikachu.convenientdelivery.favor.child.TotalFragment;
+import com.pikachu.convenientdelivery.favor.child.UnSpecificObjectFragment;
+
+import java.util.ArrayList;
 
 import static android.content.Context.SEARCH_SERVICE;
 
@@ -25,15 +34,18 @@ import static android.content.Context.SEARCH_SERVICE;
  * 帮忙
  */
 
-public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, SearchView.OnQueryTextListener {
+public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements View.OnClickListener, SearchView.OnQueryTextListener {
 
     public static final String ARGUMENT = "argument";
 
-    private SwipeRefreshLayout swipeRefreshLayout;
     private Toolbar toolbar;
     private TextView toolbarTitle;
-    private RecyclerView recyclerView;
+    private TabLayout tabFavor;
+    private ViewPager vpFavor;
     private SearchView searchView;
+
+    private ArrayList<Fragment> fragmentList = new ArrayList<>(4);
+    private ArrayList<String> titleList = new ArrayList<>(4);
 
     public static FavorFragment newInstance(String argument) {
         Bundle bundle = new Bundle();
@@ -56,9 +68,6 @@ public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements
     }
 
     private void initView() {
-        swipeRefreshLayout = bindingView.swipeRefreshLayout;
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        swipeRefreshLayout.setOnRefreshListener(this);
         toolbar = bindingView.toolbar;
         toolbar.inflateMenu(R.menu.toolbar_feature);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -67,7 +76,24 @@ public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbarTitle = bindingView.toolbarTitle;
         toolbarTitle.setOnClickListener(this);
-        recyclerView = bindingView.recyclerView;
+        tabFavor = bindingView.tabFavor;
+        vpFavor = bindingView.vpFavor;
+        fragmentList.clear();
+        fragmentList.add(new TotalFragment());
+        fragmentList.add(new SpecificObjectFragment());
+        fragmentList.add(new SpecificSiteFragment());
+        fragmentList.add(new UnSpecificObjectFragment());
+        titleList.clear();
+        titleList.add("全部");
+        titleList.add("物品明确");
+        titleList.add("地点明确");
+        titleList.add("物品待定");
+        BaseFragmentPagerAdapter adapter = new BaseFragmentPagerAdapter(getChildFragmentManager(), fragmentList, titleList);
+        vpFavor.setAdapter(adapter);
+        vpFavor.setOffscreenPageLimit(2);
+        adapter.notifyDataSetChanged();
+        tabFavor.setTabMode(TabLayout.MODE_FIXED);
+        tabFavor.setupWithViewPager(vpFavor);
     }
 
     @Override
@@ -78,11 +104,6 @@ public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         searchView.setOnQueryTextListener(this);
-    }
-
-    @Override
-    public void onRefresh() {
-        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
