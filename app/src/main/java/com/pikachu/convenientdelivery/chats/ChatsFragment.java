@@ -1,13 +1,12 @@
 package com.pikachu.convenientdelivery.chats;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -15,6 +14,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.pikachu.convenientdelivery.R;
+import com.pikachu.convenientdelivery.adapter.ChatAdapter;
+import com.pikachu.convenientdelivery.adapter.FriendAdapter;
 import com.pikachu.convenientdelivery.base.BaseFragment;
 import com.pikachu.convenientdelivery.databinding.FragmentChatsBinding;
 
@@ -33,6 +34,9 @@ public class ChatsFragment extends BaseFragment<FragmentChatsBinding> implements
     private RadioButton friend;
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
+
+    private ChatAdapter chatAdapter;
+    private FriendAdapter friendAdapter;
 
     public static ChatsFragment newInstance(String argument) {
         Bundle bundle = new Bundle();
@@ -69,6 +73,11 @@ public class ChatsFragment extends BaseFragment<FragmentChatsBinding> implements
         message = bindingView.message;
         friend = bindingView.friend;
         recyclerView = bindingView.recyclerView;
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(manager);
+        chatAdapter = new ChatAdapter();
+        friendAdapter = new FriendAdapter();
+        recyclerView.setAdapter(chatAdapter);
         fab = bindingView.fab;
         fab.setOnClickListener(this);
     }
@@ -82,8 +91,12 @@ public class ChatsFragment extends BaseFragment<FragmentChatsBinding> implements
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
         switch (checkedId) {
             case R.id.message:
+                recyclerView.setAdapter(chatAdapter);
+                chatAdapter.notifyDataSetChanged();
                 break;
             case R.id.friend:
+                recyclerView.setAdapter(friendAdapter);
+                friendAdapter.notifyDataSetChanged();
                 break;
         }
     }

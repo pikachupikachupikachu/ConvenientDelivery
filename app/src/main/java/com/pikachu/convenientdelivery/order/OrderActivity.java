@@ -11,7 +11,7 @@ import com.pikachu.convenientdelivery.base.BaseActivity;
 import com.pikachu.convenientdelivery.databinding.ActivityOrderBinding;
 
 /**
- * Created by yqhok on 7/12/2017.
+ * 下单
  */
 
 public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements View.OnClickListener {
