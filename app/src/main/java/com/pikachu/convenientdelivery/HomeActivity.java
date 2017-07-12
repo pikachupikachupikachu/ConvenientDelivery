@@ -14,14 +14,13 @@ import com.pikachu.convenientdelivery.databinding.ActivityHomeBinding;
 import com.pikachu.convenientdelivery.favor.FavorFragment;
 import com.pikachu.convenientdelivery.feature.FeatureFragment;
 import com.pikachu.convenientdelivery.me.MeFragment;
-import com.pikachu.convenientdelivery.order.OrderFragment;
+import com.pikachu.convenientdelivery.order.OrderActivity;
 import com.pikachu.convenientdelivery.util.Utility;
 
 public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemReselectedListener {
 
     private FeatureFragment featureFragment;
     private FavorFragment favorFragment;
-    private OrderFragment orderFragment;
     private ChatsFragment chatsFragment;
     private MeFragment meFragment;
 
@@ -37,6 +36,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
 
     private void initView() {
         bottomNavigationView = bindingView.bottomNavigationView;
+        bottomNavigationView.findViewById(R.id.feature).performClick();
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setOnNavigationItemReselectedListener(this);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -82,11 +82,8 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
                 transaction.replace(R.id.content, favorFragment);
                 break;
             case R.id.order:
-                if (orderFragment == null) {
-                    orderFragment = OrderFragment.newInstance("Order Fragment");
-                }
-                transaction.replace(R.id.content, orderFragment);
-                break;
+                OrderActivity.start(this);
+                return false;
             case R.id.chats:
                 if (chatsFragment == null) {
                     chatsFragment = ChatsFragment.newInstance("Chats Fragment");
@@ -104,6 +101,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
                     featureFragment = FeatureFragment.newInstance("Feature Fragment");
                 }
                 transaction.replace(R.id.content, featureFragment);
+                break;
         }
         transaction.commit();
         return true;
@@ -118,7 +116,6 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
             case R.id.favor:
                 break;
             case R.id.order:
-                orderFragment.onRefresh();
                 break;
             case R.id.chats:
                 chatsFragment.onRefresh();
