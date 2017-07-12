@@ -5,16 +5,18 @@
         android:textColor="@color/colorPrimary">
         <shape>
             <solid android:color="@android:color/white" />
-            <corners android:topLeftRadius="10dp"
-                android:bottomLeftRadius="10dp" />
+            <corners
+                android:topLeftRadius="100dp"
+                android:bottomLeftRadius="100dp" />
         </shape>
     </item>
     <item android:state_checked="false"
         android:textColor="@android:color/white">
         <shape>
             <solid android:color="@color/colorPrimary" />
-            <corners android:topLeftRadius="10dp"
-                android:bottomLeftRadius="10dp" />
+            <corners
+                android:topLeftRadius="20dp"
+                android:bottomLeftRadius="20dp" />
             <stroke android:width="1dp" android:color="@android:color/white" />
         </shape>
     </item>
