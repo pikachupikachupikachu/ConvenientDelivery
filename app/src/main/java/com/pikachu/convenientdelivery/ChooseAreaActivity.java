@@ -34,6 +34,7 @@ public class ChooseAreaActivity extends BaseActivity<ActivityChooseAreaBinding> 
         toolbar = bindingView.toolbar;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.nav_close);
     }
 
     @Override
