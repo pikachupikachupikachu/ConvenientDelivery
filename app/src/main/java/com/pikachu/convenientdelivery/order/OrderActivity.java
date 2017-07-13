@@ -3,6 +3,8 @@ package com.pikachu.convenientdelivery.order;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -16,6 +18,7 @@ import com.pikachu.convenientdelivery.databinding.ActivityOrderBinding;
 
 public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements View.OnClickListener {
 
+    private Toolbar toolbar;
     private ImageButton close;
 
     @Override
@@ -32,8 +35,22 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
     }
 
     private void initView() {
+        toolbar = bindingView.toolbar;
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         close = bindingView.close;
         close.setOnClickListener(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

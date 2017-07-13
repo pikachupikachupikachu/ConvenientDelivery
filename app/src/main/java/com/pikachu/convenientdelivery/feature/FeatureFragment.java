@@ -102,7 +102,6 @@ public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implem
         searchView.setOnQueryTextListener(this);
     }
 
-
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(false);

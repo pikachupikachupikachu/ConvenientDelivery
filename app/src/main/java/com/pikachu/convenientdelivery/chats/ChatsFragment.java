@@ -108,4 +108,5 @@ public class ChatsFragment extends BaseFragment<FragmentChatsBinding> implements
                 break;
         }
     }
+
 }
