@@ -29,7 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChooseAreaActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme" />
+        <activity android:name=".CityPickerActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme" />
         <activity android:name=".order.OrderActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme" />
 
     </application>

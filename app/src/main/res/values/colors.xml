@@ -3,4 +3,9 @@
     <color name="colorPrimary">#DAA520</color>
     <color name="colorPrimaryDark">#DAA520</color>
     <color name="colorAccent">#FF4500</color>
+
+    <color name="cp_content_bg">#F3F3F3</color>|
+    <color name="cp_divider">#E5E5E5</color>
+    <color name="gray">#8c8c8c</color>
+    <color name="gray_deep">#5c5c5c</color>
 </resources>

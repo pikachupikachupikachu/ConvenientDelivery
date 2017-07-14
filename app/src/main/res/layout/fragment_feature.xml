@@ -16,13 +16,9 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="选择城市"
-                android:textSize="12sp" />
+            <include
+                android:id="@+id/toolbar_pick_city"
+                layout="@layout/toolbar_pick_city" />
 
         </android.support.v7.widget.Toolbar>
 

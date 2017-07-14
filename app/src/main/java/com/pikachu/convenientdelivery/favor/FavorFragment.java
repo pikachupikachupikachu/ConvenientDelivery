@@ -13,9 +13,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
-import com.pikachu.convenientdelivery.ChooseAreaActivity;
+import com.pikachu.convenientdelivery.CityPickerActivity;
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.BaseFragment;
 import com.pikachu.convenientdelivery.base.adapter.BaseFragmentPagerAdapter;
@@ -38,7 +38,7 @@ public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements
     public static final String ARGUMENT = "argument";
 
     private Toolbar toolbar;
-    private TextView toolbarTitle;
+    private LinearLayout toolbarPickCity;
     private TabLayout tabFavor;
     private ViewPager vpFavor;
     private SearchView searchView;
@@ -73,8 +73,8 @@ public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbarTitle = bindingView.toolbarTitle;
-        toolbarTitle.setOnClickListener(this);
+        toolbarPickCity = bindingView.toolbarPickCity.pickCity;
+        toolbarPickCity.setOnClickListener(this);
         tabFavor = bindingView.tabFavor;
         vpFavor = bindingView.vpFavor;
         fragmentList.clear();
@@ -108,8 +108,8 @@ public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.toolbar_title:
-                ChooseAreaActivity.start(getActivity());
+            case R.id.toolbar_pick_city:
+                CityPickerActivity.start(getActivity());
                 break;
         }
     }

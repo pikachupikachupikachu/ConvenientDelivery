@@ -14,10 +14,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
-import com.pikachu.convenientdelivery.ChooseAreaActivity;
+import com.pikachu.convenientdelivery.CityPickerActivity;
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.BaseFragment;
 import com.pikachu.convenientdelivery.databinding.FragmentFeatureBinding;
@@ -39,7 +39,7 @@ public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implem
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private Toolbar toolbar;
-    private TextView toolbarTitle;
+    private LinearLayout toolbarPickCity;
     private Banner banner;
     private RecyclerView recyclerView;
     private SearchView searchView;
@@ -76,8 +76,8 @@ public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implem
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbarTitle = bindingView.toolbarTitle;
-        toolbarTitle.setOnClickListener(this);
+        toolbarPickCity = bindingView.toolbarPickCity.pickCity;
+        toolbarPickCity.setOnClickListener(this);
         urlList.clear();
         urlList.add("http://image.qjwb.com.cn/group1/M00/01/1B/CggkA1fDfVSAbV7jABxuw-Jc4KE779.jpg");
         urlList.add("http://www.getdigsy.com/blog/wp-content/uploads/2016/12/industrial-hall-1630740_1280.jpg");
@@ -110,8 +110,8 @@ public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implem
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.toolbar_title:
-                ChooseAreaActivity.start(getActivity());
+            case R.id.toolbar_pick_city:
+                CityPickerActivity.start(getActivity());
                 break;
         }
     }

@@ -36,10 +36,10 @@
                         android:paddingLeft="15dp"
                         android:paddingRight="5dp"
                         android:button="@null"
-                        android:background="@drawable/chats_message_bg"
+                        android:background="@drawable/left_button_bg"
                         android:text="消息"
                         android:textSize="18sp"
-                        android:textColor="@drawable/chats_message_text_color"
+                        android:textColor="@drawable/button_text_color"
                         android:gravity="center"
                         android:checked="true"/>
 
@@ -53,10 +53,10 @@
                         android:paddingLeft="5dp"
                         android:paddingRight="15dp"
                         android:button="@null"
-                        android:background="@drawable/chats_friend_bg"
+                        android:background="@drawable/right_button_bg"
                         android:text="好友"
                         android:textSize="18sp"
-                        android:textColor="@drawable/chats_friend_text_color"
+                        android:textColor="@drawable/button_text_color"
                         android:gravity="center" />
 
                 </RadioGroup>
