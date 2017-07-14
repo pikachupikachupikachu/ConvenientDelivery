@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pikachu.convenientdelivery.R;
@@ -25,6 +26,9 @@ public class MeFragment extends BaseFragment<FragmentMeBinding> implements Swipe
     private TextView name;
     private TextView whatsUp;
     private ImageButton detail;
+    private LinearLayout following;
+    private LinearLayout follower;
+    private LinearLayout like;
 
     public static MeFragment newInstance(String argument) {
         Bundle bundle = new Bundle();
@@ -55,6 +59,12 @@ public class MeFragment extends BaseFragment<FragmentMeBinding> implements Swipe
         whatsUp = bindingView.whatsUp;
         detail = bindingView.detail;
         detail.setOnClickListener(this);
+        following = bindingView.following;
+        following.setOnClickListener(this);
+        follower = bindingView.follower;
+        follower.setOnClickListener(this);
+        like = bindingView.like;
+        like.setOnClickListener(this);
     }
 
     @Override
@@ -67,6 +77,13 @@ public class MeFragment extends BaseFragment<FragmentMeBinding> implements Swipe
         switch (v.getId()) {
             case R.id.detail:
                 break;
+            case R.id.following:
+                break;
+            case R.id.follower:
+                break;
+            case R.id.like:
+                break;
         }
     }
+
 }

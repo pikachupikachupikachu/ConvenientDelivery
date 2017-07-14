@@ -37,7 +37,7 @@ public class CityListAdapter extends BaseAdapter {
         this.context = context;
         this.cities = cities;
         this.inflater = LayoutInflater.from(context);
-        if (cities == null){
+        if (cities == null) {
             cities = new ArrayList<>();
         }
         cities.add(0, new City("定位", "0"));
@@ -45,12 +45,12 @@ public class CityListAdapter extends BaseAdapter {
         int size = cities.size();
         letterIndexes = new HashMap<>();
         sections = new String[size];
-        for (int index = 0; index < size; index++){
+        for (int index = 0; index < size; index ++) {
             //当前城市拼音首字母
             String currentLetter = PinyinUtils.getFirstLetter(cities.get(index).getPinyin());
             //上个首字母，如果不存在设为""
             String previousLetter = index >= 1 ? PinyinUtils.getFirstLetter(cities.get(index - 1).getPinyin()) : "";
-            if (!TextUtils.equals(currentLetter, previousLetter)){
+            if (!TextUtils.equals(currentLetter, previousLetter)) {
                 letterIndexes.put(currentLetter, index);
                 sections[index] = currentLetter;
             }
@@ -62,7 +62,7 @@ public class CityListAdapter extends BaseAdapter {
      * @param letter
      * @return
      */
-    public int getLetterPosition(String letter){
+    public int getLetterPosition(String letter) {
         Integer integer = letterIndexes.get(letter);
         return integer == null ? -1 : integer;
     }
@@ -144,7 +144,7 @@ public class CityListAdapter extends BaseAdapter {
                 });
                 break;
             case 2:     //所有
-                if (view == null){
+                if (view == null) {
                     view = inflater.inflate(R.layout.cp_item_city_list_view, parent, false);
                     holder = new CityViewHolder();
                     holder.letter = (TextView) view.findViewById(R.id.tv_item_city_listview_letter);
@@ -153,12 +153,12 @@ public class CityListAdapter extends BaseAdapter {
                 } else {
                     holder = (CityViewHolder) view.getTag();
                 }
-                if (position >= 1){
+                if (position >= 1) {
                     final String city = cities.get(position).getName();
                     holder.name.setText(city);
                     String currentLetter = PinyinUtils.getFirstLetter(cities.get(position).getPinyin());
                     String previousLetter = position >= 1 ? PinyinUtils.getFirstLetter(cities.get(position - 1).getPinyin()) : "";
-                    if (!TextUtils.equals(currentLetter, previousLetter)){
+                    if (!TextUtils.equals(currentLetter, previousLetter)) {
                         holder.letter.setVisibility(View.VISIBLE);
                         holder.letter.setText(currentLetter);
                     } else {
@@ -178,16 +178,16 @@ public class CityListAdapter extends BaseAdapter {
         return view;
     }
 
-    public static class CityViewHolder{
+    public static class CityViewHolder {
         TextView letter;
         TextView name;
     }
 
-    public void setOnCityClickListener(OnCityClickListener listener){
+    public void setOnCityClickListener(OnCityClickListener listener) {
         this.onCityClickListener = listener;
     }
 
-    public interface OnCityClickListener{
+    public interface OnCityClickListener {
         void onCityClick(String name);
         void onLocateClick();
     }

@@ -17,6 +17,7 @@ import java.util.List;
  */
 
 public class HotCityGridAdapter extends BaseAdapter {
+
     private Context context;
     private List<String> cities;
 
@@ -57,7 +58,7 @@ public class HotCityGridAdapter extends BaseAdapter {
             holder = new HotCityViewHolder();
             holder.name = (TextView) view.findViewById(R.id.tv_hot_city_name);
             view.setTag(holder);
-        }else{
+        } else {
             holder = (HotCityViewHolder) view.getTag();
         }
         holder.name.setText(cities.get(position));

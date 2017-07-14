@@ -1,15 +1,13 @@
 package com.pikachu.convenientdelivery.model;
 
 /**
- * Created by yqhok on 7/14/2017.
+ * City
  */
 
 public class City {
 
     private String name;
     private String pinyin;
-
-    public City() {}
 
     public City(String name, String pinyin) {
         this.name = name;

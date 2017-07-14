@@ -2,22 +2,26 @@ package com.pikachu.convenientdelivery;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pikachu.convenientdelivery.adapter.CityListAdapter;
+import com.pikachu.convenientdelivery.adapter.ResultListAdapter;
 import com.pikachu.convenientdelivery.base.BaseActivity;
 import com.pikachu.convenientdelivery.databinding.ActivityCityPickerBinding;
+import com.pikachu.convenientdelivery.databinding.CpViewNoSearchResultBinding;
 import com.pikachu.convenientdelivery.db.DBManager;
 import com.pikachu.convenientdelivery.model.City;
 import com.pikachu.convenientdelivery.util.Utility;
@@ -29,7 +33,7 @@ import java.util.List;
  * ChooseArea
  */
 
-public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> implements View.OnClickListener {
+public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> implements View.OnClickListener, SearchView.OnQueryTextListener {
 
     public static final String KEY_PICKED_CITY = "picked_city";
 
@@ -39,12 +43,10 @@ public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> 
     private ListView listView;
     private ListView resultListView;
     private SideLetterBar letterBar;
-    private EditText searchBox;
-    private ImageView clearBtn;
-    private ImageView backBtn;
     private ViewGroup emptyView;
 
     private CityListAdapter cityAdapter;
+    private ResultListAdapter resultAdapter;
     private List<City> allCities;
     private DBManager dbManager;
 
@@ -90,6 +92,7 @@ public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> 
             public void onLocateClick() {
             }
         });
+        resultAdapter = new ResultListAdapter(this, null);
     }
 
     private void initView() {
@@ -99,16 +102,27 @@ public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.nav_close);
         searchView = bindingView.searchView;
+        searchView.setOnQueryTextListener(this);
         listView = bindingView.listViewAllCity;
         listView.setAdapter(cityAdapter);
         TextView overlay = bindingView.tvLetterOverlay;
-        letterBar = (SideLetterBar) findViewById(R.id.side_letter_bar);
+        letterBar = bindingView.sideLetterBar;
         letterBar.setOverlay(overlay);
         letterBar.setOnLetterChangedListener(new SideLetterBar.OnLetterChangedListener() {
             @Override
             public void onLetterChanged(String letter) {
                 int position = cityAdapter.getLetterPosition(letter);
                 listView.setSelection(position);
+            }
+        });
+        CpViewNoSearchResultBinding binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.cp_view_no_search_result, null, false);
+        emptyView = binding.emptyView;
+        resultListView = bindingView.listViewSearchResult;
+        resultListView.setAdapter(resultAdapter);
+        resultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                back(resultAdapter.getItem(position).getName());
             }
         });
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -151,6 +165,29 @@ public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> 
         switch (v.getId()) {
 
         }
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if (TextUtils.isEmpty(newText)) {
+            emptyView.setVisibility(View.GONE);
+            resultListView.setVisibility(View.GONE);
+        } else {
+            resultListView.setVisibility(View.VISIBLE);
+            List<City> result = dbManager.searchCity(newText);
+            if (result == null || result.size() == 0) {
+                emptyView.setVisibility(View.VISIBLE);
+            } else {
+                emptyView.setVisibility(View.GONE);
+                resultAdapter.changeData(result);
+            }
+        }
+        return true;
     }
 
 }
