@@ -6,6 +6,24 @@
         android:layout_height="match_parent">
 
         <ImageButton
+            android:id="@+id/order_daigou"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="20dp"
+            android:src="@mipmap/ic_launcher_round"
+            android:background="@null"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_daigou"
+            android:layout_centerHorizontal="true"
+            android:text="发布代购"
+            android:textSize="24sp"
+            android:gravity="center_vertical" />
+
+        <ImageButton
             android:id="@+id/close"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

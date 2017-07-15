@@ -17,6 +17,7 @@ import com.pikachu.convenientdelivery.databinding.ActivityOrderBinding;
 
 public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements View.OnClickListener {
 
+    private ImageButton orderDaigou;
     private ImageButton close;
 
     @Override
@@ -33,6 +34,8 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
     }
 
     private void initView() {
+        orderDaigou = bindingView.orderDaigou;
+        orderDaigou.setOnClickListener(this);
         close = bindingView.close;
         close.setOnClickListener(this);
     }
@@ -51,6 +54,8 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.order_daigou:
+                break;
             case R.id.close:
                 finish();
                 break;

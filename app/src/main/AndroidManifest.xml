@@ -31,6 +31,10 @@
         </activity>
         <activity android:name=".CityPickerActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme" />
         <activity android:name=".order.OrderActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme" />
+        <activity android:name=".FollowingActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme" />
+        <activity android:name=".FollowerActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme" />
+        <activity android:name=".LikeActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme" />
+        <activity android:name=".MyProfileActivity" android:screenOrientation="portrait" android:theme="@style/AppTheme" />
 
     </application>
 

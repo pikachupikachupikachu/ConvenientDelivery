@@ -9,6 +9,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.pikachu.convenientdelivery.FollowerActivity;
+import com.pikachu.convenientdelivery.FollowingActivity;
+import com.pikachu.convenientdelivery.LikeActivity;
+import com.pikachu.convenientdelivery.MyProfileActivity;
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.BaseFragment;
 import com.pikachu.convenientdelivery.databinding.FragmentMeBinding;
@@ -25,7 +29,7 @@ public class MeFragment extends BaseFragment<FragmentMeBinding> implements Swipe
     private ImageView headShot;
     private TextView name;
     private TextView whatsUp;
-    private ImageButton detail;
+    private ImageButton myProfile;
     private LinearLayout following;
     private LinearLayout follower;
     private LinearLayout like;
@@ -57,8 +61,8 @@ public class MeFragment extends BaseFragment<FragmentMeBinding> implements Swipe
         headShot = bindingView.headShot;
         name = bindingView.name;
         whatsUp = bindingView.whatsUp;
-        detail = bindingView.detail;
-        detail.setOnClickListener(this);
+        myProfile = bindingView.myProfile;
+        myProfile.setOnClickListener(this);
         following = bindingView.following;
         following.setOnClickListener(this);
         follower = bindingView.follower;
@@ -75,13 +79,17 @@ public class MeFragment extends BaseFragment<FragmentMeBinding> implements Swipe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.detail:
+            case R.id.my_profile:
+                MyProfileActivity.start(getActivity());
                 break;
             case R.id.following:
+                FollowingActivity.start(getActivity());
                 break;
             case R.id.follower:
+                FollowerActivity.start(getActivity());
                 break;
             case R.id.like:
+                LikeActivity.start(getActivity());
                 break;
         }
     }
