@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#DAA520</color>
-    <color name="colorPrimaryDark">#DAA520</color>
-    <color name="colorAccent">#FF4500</color>
+    <color name="colorPrimary">#fbc02d</color>
+    <color name="colorPrimaryDark">#c49000</color>
+    <color name="colorAccent">#ff3d00</color>
 
     <color name="cp_content_bg">#F3F3F3</color>|
     <color name="cp_divider">#E5E5E5</color>
     <color name="gray">#8c8c8c</color>
     <color name="gray_deep">#5c5c5c</color>
+
+    <color name="white">#ffffff</color>
+    <color name="dark">#333333</color>
+    <color name="darkGrey">#dddddd</color>
+    <color name="divider">#e5e5e5</color>
+    <color name="transparent">#00000000</color>
 </resources>

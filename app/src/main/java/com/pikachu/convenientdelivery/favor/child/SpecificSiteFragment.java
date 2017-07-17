@@ -21,14 +21,10 @@ public class SpecificSiteFragment extends BaseFragment<FragmentSpecificSiteBindi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        showContentView();
         initView();
     }
 
-    @Override
-    public int setContent() {
-        return R.layout.fragment_specific_site;
-    }
+
 
     private void initView() {
         swipeRefreshLayout = bindingView.swipeRefreshLayout;
@@ -42,4 +38,8 @@ public class SpecificSiteFragment extends BaseFragment<FragmentSpecificSiteBindi
         swipeRefreshLayout.setRefreshing(false);
     }
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_specific_site;
+    }
 }

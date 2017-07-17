@@ -23,9 +23,12 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order);
-        showContentView();
         initView();
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_order;
     }
 
     public static void start(Context context) {

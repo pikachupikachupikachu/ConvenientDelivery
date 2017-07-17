@@ -53,8 +53,8 @@ public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_city_picker);
-        showContentView();
+
+
         setTitle("选择城市");
         initData();
         initView();
@@ -70,6 +70,11 @@ public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_city_picker;
     }
 
     public static void start(Context context) {

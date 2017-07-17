@@ -57,14 +57,9 @@ public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implem
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        showContentView();
         initView();
     }
 
-    @Override
-    public int setContent() {
-        return R.layout.fragment_feature;
-    }
 
     private void initView() {
         swipeRefreshLayout = bindingView.swipeRefreshLayout;
@@ -126,4 +121,8 @@ public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implem
         return false;
     }
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_feature;
+    }
 }

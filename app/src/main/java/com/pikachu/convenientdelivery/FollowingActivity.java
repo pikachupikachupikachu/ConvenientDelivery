@@ -22,10 +22,13 @@ public class FollowingActivity extends BaseActivity<ActivityFollowingBinding> im
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_following);
-        showContentView();
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         initView();
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_following;
     }
 
     public static void start(Context context) {
