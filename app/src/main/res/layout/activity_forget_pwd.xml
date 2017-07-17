@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.pikachu.convenientdelivery.entrance.ForgetPwdActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tb_forget_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
+            app:theme="@style/ToolbarTheme"
+            app:title="忘记密码">
+
+        </android.support.v7.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tl_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    app:hintTextAppearance="@style/hintAppearance">
+
+                    <EditText
+                        android:id="@+id/et_phone"
+                        style="@style/EditTextTheme"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:hint="请输入手机号码"
+                        android:inputType="number"
+
+                        />
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_sms"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:background="@color/dark"
+                    android:gravity="center"
+                    android:text="获取验证码"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/caption" />
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tl_sms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/hintAppearance">
+
+                <EditText
+                    android:id="@+id/et_sms"
+                    style="@style/EditTextTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="请输入验证码"
+                    android:inputType="number" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tl_new_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/hintAppearance"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/gray_deep">
+
+                <EditText
+                    android:id="@+id/et_new_pwd"
+                    style="@style/EditTextTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="请输入新密码"
+                    android:inputType="textPassword" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <Button
+                android:id="@+id/btn_submit"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/login_btn_selector"
+                android:text="提交"
+                android:textColor="@color/white"
+                android:textSize="@dimen/bodyNormal" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>
+
+

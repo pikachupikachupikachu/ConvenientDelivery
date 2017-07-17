@@ -1,5 +1,6 @@
 package com.pikachu.convenientdelivery;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,6 +12,7 @@ import android.view.ViewTreeObserver;
 import com.pikachu.convenientdelivery.base.BaseActivity;
 import com.pikachu.convenientdelivery.chats.ChatsFragment;
 import com.pikachu.convenientdelivery.databinding.ActivityHomeBinding;
+import com.pikachu.convenientdelivery.databinding.ActivityLoginBinding;
 import com.pikachu.convenientdelivery.favor.FavorFragment;
 import com.pikachu.convenientdelivery.feature.FeatureFragment;
 import com.pikachu.convenientdelivery.me.MeFragment;
@@ -29,9 +31,13 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        showContentView();
+
         initView();
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_home;
     }
 
     private void initView() {
@@ -127,5 +133,6 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
                 break;
         }
     }
+
 
 }

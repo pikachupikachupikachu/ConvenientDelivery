@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -18,4 +18,34 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/gray</item>
     </style>
+
+    <!--水波纹效果-->
+    <style name="rippleStyle">
+        <item name="android:clickable">true</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <!-- ToolBar菜单样式 -->
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="actionMenuTextColor">@color/dark</item> <!--  敲定颜色-->
+        <item name="android:textSize">18sp</item> <!--  搞掂字体大小-->
+    </style>
+
+    <style name="hintAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="EditTextTheme">
+
+        <item name="android:textCursorDrawable">@drawable/cursor_color</item>
+        <item name="android:backgroundTint" tools:targetApi="lollipop">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/bodyLarge</item>
+
+    </style>
+
+
+
+
+
 </resources>

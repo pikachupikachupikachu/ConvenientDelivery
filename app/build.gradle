@@ -27,6 +27,8 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+    // 添加Bmob的依赖及适配Android6.0
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.3.1'
@@ -35,5 +37,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:4.0.0-RC1'
     compile 'org.litepal.android:core:1.5.1'
     compile 'com.youth.banner:banner:1.4.9'
+    compile 'cn.bmob.android:http-legacy:1.0'
+    compile 'cn.bmob.android:bmob-sdk:3.5.0'
     testCompile 'junit:junit:4.12'
 }

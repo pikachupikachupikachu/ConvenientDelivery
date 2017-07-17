@@ -1,28 +1,26 @@
 package com.pikachu.convenientdelivery.base;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-
-import com.pikachu.convenientdelivery.R;
-import com.pikachu.convenientdelivery.databinding.ActivityBaseBinding;
+import android.widget.Toast;
 
 
-public class BaseActivity<SV extends ViewDataBinding> extends AppCompatActivity {
+public abstract class BaseActivity<VB extends ViewDataBinding> extends AppCompatActivity {
 
-    protected SV bindingView;
-    private ActivityBaseBinding mBaseBinding;
+    protected VB bindingView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
+
+        bindingView = DataBindingUtil.setContentView(this,getLayoutId());
+
+
+        init();
     }
 
     @Override
@@ -30,22 +28,46 @@ public class BaseActivity<SV extends ViewDataBinding> extends AppCompatActivity 
         super.onDestroy();
     }
 
-    @Override
-    public void setContentView(@LayoutRes int layoutResID) {
-        mBaseBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.activity_base, null, false);
-        bindingView = DataBindingUtil.inflate(getLayoutInflater(), layoutResID, null, false);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        bindingView.getRoot().setLayoutParams(params);
-        RelativeLayout mContainer = (RelativeLayout) mBaseBinding.getRoot().findViewById(R.id.container);
-        mContainer.addView(bindingView.getRoot());
-        getWindow().setContentView(mBaseBinding.getRoot());
-        bindingView.getRoot().setVisibility(View.GONE);
+
+
+    /**
+     * 返回子Activity布局ID的抽象方法
+     * @return
+     */
+    protected abstract int getLayoutId();
+
+
+    protected void init(){}
+
+
+
+    /**
+     * 封装Toast
+     * @param s
+     */
+    public void showToast(String s){
+        Toast.makeText(this,s,Toast.LENGTH_SHORT).show();
     }
 
-    protected void showContentView() {
-        if (bindingView.getRoot().getVisibility() != View.VISIBLE) {
-            bindingView.getRoot().setVisibility(View.VISIBLE);
+    /**
+     * 封装界面跳转
+     */
+
+    public void jumpTo(Class<?> clazz,boolean isFinish){
+        Intent intent = new Intent(this,clazz);
+        startActivity(intent);
+        if(isFinish){
+            finish();
         }
     }
+
+    public void jumpTo(Intent intent,boolean isFinish){
+        startActivity(intent);
+        if(isFinish){
+            finish();
+        }
+    }
+
+
 
 }

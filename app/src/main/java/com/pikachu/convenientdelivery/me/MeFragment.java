@@ -45,14 +45,10 @@ public class MeFragment extends BaseFragment<FragmentMeBinding> implements Swipe
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        showContentView();
         initView();
     }
 
-    @Override
-    public int setContent() {
-        return R.layout.fragment_me;
-    }
+
 
     private void initView() {
         swipeRefreshLayout = bindingView.swipeRefreshLayout;
@@ -94,4 +90,8 @@ public class MeFragment extends BaseFragment<FragmentMeBinding> implements Swipe
         }
     }
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_me;
+    }
 }

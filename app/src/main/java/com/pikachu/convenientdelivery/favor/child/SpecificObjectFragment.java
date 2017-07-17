@@ -21,14 +21,11 @@ public class SpecificObjectFragment extends BaseFragment<FragmentSpecificObjectB
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        showContentView();
+
         initView();
     }
 
-    @Override
-    public int setContent() {
-        return R.layout.fragment_specific_object;
-    }
+
 
     private void initView() {
         swipeRefreshLayout = bindingView.swipeRefreshLayout;
@@ -42,4 +39,8 @@ public class SpecificObjectFragment extends BaseFragment<FragmentSpecificObjectB
         swipeRefreshLayout.setRefreshing(false);
     }
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_specific_object;
+    }
 }

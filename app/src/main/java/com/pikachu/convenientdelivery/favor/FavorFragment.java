@@ -57,14 +57,9 @@ public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        showContentView();
         initView();
     }
 
-    @Override
-    public int setContent() {
-        return R.layout.fragment_favor;
-    }
 
     private void initView() {
         toolbar = bindingView.toolbar;
@@ -124,4 +119,8 @@ public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements
         return false;
     }
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_favor;
+    }
 }

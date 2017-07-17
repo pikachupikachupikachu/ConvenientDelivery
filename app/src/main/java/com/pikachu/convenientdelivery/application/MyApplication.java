@@ -4,6 +4,8 @@ import android.content.Context;
 
 import org.litepal.LitePalApplication;
 
+import cn.bmob.v3.Bmob;
+
 /**
  * Application
  */
@@ -21,6 +23,7 @@ public class MyApplication extends LitePalApplication {
         super.onCreate();
         context = getApplicationContext();
         LitePalApplication.initialize(context);
+        Bmob.initialize(this,Constant.BMOB_APP_KEY);
     }
 
 }
