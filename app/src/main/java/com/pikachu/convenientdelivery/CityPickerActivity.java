@@ -17,6 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.pikachu.convenientdelivery.adapter.CityListAdapter;
 import com.pikachu.convenientdelivery.adapter.ResultListAdapter;
 import com.pikachu.convenientdelivery.base.BaseActivity;
@@ -24,13 +28,15 @@ import com.pikachu.convenientdelivery.databinding.ActivityCityPickerBinding;
 import com.pikachu.convenientdelivery.databinding.CpViewNoSearchResultBinding;
 import com.pikachu.convenientdelivery.db.DBManager;
 import com.pikachu.convenientdelivery.model.City;
+import com.pikachu.convenientdelivery.model.LocateState;
+import com.pikachu.convenientdelivery.util.StringUtils;
 import com.pikachu.convenientdelivery.util.Utility;
 import com.pikachu.convenientdelivery.view.SideLetterBar;
 
 import java.util.List;
 
 /**
- * ChooseArea
+ * CityPicker
  */
 
 public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> implements View.OnClickListener, SearchView.OnQueryTextListener {
@@ -50,6 +56,8 @@ public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> 
     private List<City> allCities;
     private DBManager dbManager;
 
+    private AMapLocationClient locationClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +66,7 @@ public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> 
         setTitle("选择城市");
         initData();
         initView();
-        initLocation();
+//        initLocation();
     }
 
     @Override
@@ -70,6 +78,7 @@ public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+//        locationClient.stopLocation();
     }
 
     @Override
@@ -144,7 +153,29 @@ public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> 
     }
 
     private void initLocation() {
-
+        locationClient = new AMapLocationClient(this);
+        AMapLocationClientOption option = new AMapLocationClientOption();
+        option.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        option.setOnceLocation(true);
+        locationClient.setLocationOption(option);
+        locationClient.setLocationListener(new AMapLocationListener() {
+            @Override
+            public void onLocationChanged(AMapLocation aMapLocation) {
+                if (aMapLocation != null) {
+                    if (aMapLocation.getErrorCode() == 0) {
+                        String city = aMapLocation.getCity();
+                        String district = aMapLocation.getDistrict();
+                        String location = StringUtils.extractLocation(city, district);
+                        cityAdapter.updateLocateState(LocateState.SUCCESS, location);
+                        DBManager.updateCurrentCity(location);
+                    } else {
+                        //定位失败
+                        cityAdapter.updateLocateState(LocateState.FAILED, null);
+                    }
+                }
+            }
+        });
+        locationClient.startLocation();
     }
 
     @Override
@@ -158,10 +189,8 @@ public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> 
         }
     }
 
-    private void back(String city){
-        Intent data = new Intent();
-        data.putExtra(KEY_PICKED_CITY, city);
-        setResult(RESULT_OK, data);
+    private void back(String city) {
+        DBManager.setPickedCity(city);
         finish();
     }
 

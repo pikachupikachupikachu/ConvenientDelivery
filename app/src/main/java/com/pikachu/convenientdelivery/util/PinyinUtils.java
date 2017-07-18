@@ -4,6 +4,9 @@ import android.text.TextUtils;
 
 import java.util.regex.Pattern;
 
+/**
+ * PinyinUtils
+ */
 public class PinyinUtils {
 
     /**

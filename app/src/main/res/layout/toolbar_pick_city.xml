@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+        <variable
+            name="db"
+            type="com.pikachu.convenientdelivery.db.DBManager" />
+    </data>
+
     <LinearLayout
         android:id="@+id/pick_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/picked_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="选择城市"
+            android:text="@{db.pickedCity}"
             android:gravity="center_vertical"
             android:textSize="12sp" />
 

@@ -1,10 +1,14 @@
 package com.pikachu.convenientdelivery.db;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.os.Environment;
 
+import com.pikachu.convenientdelivery.application.MyApplication;
 import com.pikachu.convenientdelivery.model.City;
 
 import java.io.File;
@@ -17,7 +21,22 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class DBManager {
+public class DBManager extends BaseObservable {
+
+    private static String pickedCity;
+
+    @Bindable
+    public static String getPickedCity() {
+        if (pickedCity != null && !pickedCity.isEmpty()) {
+            return pickedCity;
+        } else {
+            return getCurrentCity();
+        }
+    }
+
+    public static void setPickedCity(String pickedCity) {
+        DBManager.pickedCity = pickedCity;
+    }
 
     private static final String ASSETS_NAME = "china_cities.db";
     private static final String DB_NAME = "china_cities.db";
@@ -107,6 +126,19 @@ public class DBManager {
             String b = rhs.getPinyin().substring(0, 1);
             return a.compareTo(b);
         }
+    }
+
+    public static String getCurrentCity() {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("pref", Context.MODE_PRIVATE);
+        return preferences.getString("current_city", "选择城市");
+    }
+
+    public static void updateCurrentCity(String city) {
+        SharedPreferences.Editor editor = MyApplication.getContext().getSharedPreferences("pref", Context.MODE_PRIVATE).edit();
+        if (city != null && !city.isEmpty()) {
+            editor.putString("current_city", city);
+        }
+        editor.apply();
     }
 
 }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.model.City;
+import com.pikachu.convenientdelivery.model.LocateState;
 import com.pikachu.convenientdelivery.util.PinyinUtils;
 import com.pikachu.convenientdelivery.view.WrapHeightGridView;
 
@@ -32,6 +33,8 @@ public class CityListAdapter extends BaseAdapter {
     private HashMap<String, Integer> letterIndexes;
     private String[] sections;
     private OnCityClickListener onCityClickListener;
+    private int locateState = LocateState.LOCATING;
+    private String locatedCity;
 
     public CityListAdapter(Context context, List<City> cities) {
         this.context = context;
@@ -55,6 +58,16 @@ public class CityListAdapter extends BaseAdapter {
                 sections[index] = currentLetter;
             }
         }
+    }
+
+    /**
+     * 更新定位状态
+     * @param state
+     */
+    public void updateLocateState(int state, String city){
+        this.locateState = state;
+        this.locatedCity = city;
+        notifyDataSetChanged();
     }
 
     /**
@@ -98,37 +111,37 @@ public class CityListAdapter extends BaseAdapter {
         int viewType = getItemViewType(position);
         switch (viewType){
             case 0:     //定位
-//                view = inflater.inflate(R.layout.cp_view_locate_city, parent, false);
-//                ViewGroup container = (ViewGroup) view.findViewById(R.id.layout_locate);
-//                TextView state = (TextView) view.findViewById(R.id.tv_located_city);
-//                switch (locateState){
-//                    case LocateState.LOCATING:
-//                        state.setText(context.getString(R.string.cp_locating));
-//                        break;
-//                    case LocateState.FAILED:
-//                        state.setText(R.string.cp_located_failed);
-//                        break;
-//                    case LocateState.SUCCESS:
-//                        state.setText(locatedCity);
-//                        break;
-//                }
-//                container.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        if (locateState == LocateState.FAILED){
-//                            //重新定位
-//                            if (onCityClickListener != null){
-//                                onCityClickListener.onLocateClick();
-//                            }
-//                        }else if (locateState == LocateState.SUCCESS){
-//                            //返回定位城市
-//                            if (onCityClickListener != null){
-//                                onCityClickListener.onCityClick(locatedCity);
-//                            }
-//                        }
-//                    }
-//                });
-//                break;
+                view = inflater.inflate(R.layout.cp_view_locate_city, parent, false);
+                ViewGroup container = (ViewGroup) view.findViewById(R.id.layout_locate);
+                TextView state = (TextView) view.findViewById(R.id.tv_located_city);
+                switch (locateState){
+                    case LocateState.LOCATING:
+                        state.setText(context.getString(R.string.cp_locating));
+                        break;
+                    case LocateState.FAILED:
+                        state.setText(R.string.cp_located_failed);
+                        break;
+                    case LocateState.SUCCESS:
+                        state.setText(locatedCity);
+                        break;
+                }
+                container.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (locateState == LocateState.FAILED){
+                            //重新定位
+                            if (onCityClickListener != null){
+                                onCityClickListener.onLocateClick();
+                            }
+                        }else if (locateState == LocateState.SUCCESS){
+                            //返回定位城市
+                            if (onCityClickListener != null){
+                                onCityClickListener.onCityClick(locatedCity);
+                            }
+                        }
+                    }
+                });
+                break;
             case 1:     //热门
                 view = inflater.inflate(R.layout.cp_hot_city, parent, false);
                 WrapHeightGridView gridView = (WrapHeightGridView) view.findViewById(R.id.gridview_hot_city);

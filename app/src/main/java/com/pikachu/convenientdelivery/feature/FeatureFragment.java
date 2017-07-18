@@ -2,6 +2,7 @@ package com.pikachu.convenientdelivery.feature;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
@@ -21,6 +22,8 @@ import com.pikachu.convenientdelivery.CityPickerActivity;
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.BaseFragment;
 import com.pikachu.convenientdelivery.databinding.FragmentFeatureBinding;
+import com.pikachu.convenientdelivery.databinding.ToolbarPickCityBinding;
+import com.pikachu.convenientdelivery.db.DBManager;
 import com.youth.banner.Banner;
 import com.youth.banner.loader.ImageLoader;
 
@@ -39,6 +42,7 @@ public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implem
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private Toolbar toolbar;
+    private ToolbarPickCityBinding toolbarPickCityBinding;
     private LinearLayout toolbarPickCity;
     private Banner banner;
     private RecyclerView recyclerView;
@@ -60,6 +64,10 @@ public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implem
         initView();
     }
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_feature;
+    }
 
     private void initView() {
         swipeRefreshLayout = bindingView.swipeRefreshLayout;
@@ -71,8 +79,8 @@ public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implem
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbarPickCity = bindingView.toolbarPickCity.pickCity;
-        toolbarPickCity.setOnClickListener(this);
+        toolbarPickCityBinding = bindingView.toolbarPickCity;
+        toolbarPickCityBinding.pickCity.setOnClickListener(this);
         urlList.clear();
         urlList.add("http://image.qjwb.com.cn/group1/M00/01/1B/CggkA1fDfVSAbV7jABxuw-Jc4KE779.jpg");
         urlList.add("http://www.getdigsy.com/blog/wp-content/uploads/2016/12/industrial-hall-1630740_1280.jpg");
@@ -98,6 +106,16 @@ public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implem
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 0:
+                String city = DBManager.getPickedCity();
+                toolbarPickCityBinding.pickedCity.setText(city);
+                break;
+        }
+    }
+
+    @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(false);
     }
@@ -106,7 +124,8 @@ public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implem
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.toolbar_pick_city:
-                CityPickerActivity.start(getActivity());
+                Intent intent = new Intent(getActivity(), CityPickerActivity.class);
+                startActivityForResult(intent, 0);
                 break;
         }
     }
@@ -119,10 +138,5 @@ public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implem
     @Override
     public boolean onQueryTextChange(String newText) {
         return false;
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.fragment_feature;
     }
 }

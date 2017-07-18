@@ -28,6 +28,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <!--<meta-data-->
+        <!--android:name="com.amap.api.v2.apikey"-->
+        <!--android:value="86c5f96ada10f46868bb224d3ca3929c" />-->
         <activity
             android:name=".HomeActivity"
             android:screenOrientation="portrait"
@@ -58,13 +61,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity android:name=".entrance.LoginActivity"
-            android:launchMode="singleTask"
-            >
-
-        </activity>
+            android:launchMode="singleTask" />
         <activity android:name=".entrance.RegisterActivity" />
         <activity android:name=".entrance.ForgetPwdActivity" />
-
         <activity android:name=".entrance.SmsLoginActivity" />
         <activity android:name=".entrance.SplashActivity">
             <intent-filter>
@@ -73,6 +72,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--<service android:name="com.amap.api.location.APSService" />-->
     </application>
 
 </manifest>

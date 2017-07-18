@@ -1,6 +1,7 @@
 package com.pikachu.convenientdelivery.favor;
 
 import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -13,13 +14,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.pikachu.convenientdelivery.CityPickerActivity;
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.BaseFragment;
 import com.pikachu.convenientdelivery.base.adapter.BaseFragmentPagerAdapter;
 import com.pikachu.convenientdelivery.databinding.FragmentFavorBinding;
+import com.pikachu.convenientdelivery.databinding.ToolbarPickCityBinding;
+import com.pikachu.convenientdelivery.db.DBManager;
 import com.pikachu.convenientdelivery.favor.child.SpecificObjectFragment;
 import com.pikachu.convenientdelivery.favor.child.SpecificSiteFragment;
 import com.pikachu.convenientdelivery.favor.child.TotalFragment;
@@ -38,7 +40,7 @@ public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements
     public static final String ARGUMENT = "argument";
 
     private Toolbar toolbar;
-    private LinearLayout toolbarPickCity;
+    private ToolbarPickCityBinding toolbarPickCityBinding;
     private TabLayout tabFavor;
     private ViewPager vpFavor;
     private SearchView searchView;
@@ -60,6 +62,10 @@ public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements
         initView();
     }
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_favor;
+    }
 
     private void initView() {
         toolbar = bindingView.toolbar;
@@ -68,8 +74,8 @@ public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbarPickCity = bindingView.toolbarPickCity.pickCity;
-        toolbarPickCity.setOnClickListener(this);
+        toolbarPickCityBinding = bindingView.toolbarPickCity;
+        toolbarPickCityBinding.pickCity.setOnClickListener(this);
         tabFavor = bindingView.tabFavor;
         vpFavor = bindingView.vpFavor;
         fragmentList.clear();
@@ -101,10 +107,21 @@ public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 0:
+                String city = DBManager.getPickedCity();
+                toolbarPickCityBinding.pickedCity.setText(city);
+                break;
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.toolbar_pick_city:
-                CityPickerActivity.start(getActivity());
+                Intent intent = new Intent(getActivity(), CityPickerActivity.class);
+                startActivityForResult(intent, 0);
                 break;
         }
     }
@@ -117,10 +134,5 @@ public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements
     @Override
     public boolean onQueryTextChange(String newText) {
         return false;
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.fragment_favor;
     }
 }
