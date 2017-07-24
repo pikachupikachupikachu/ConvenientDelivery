@@ -8,6 +8,10 @@
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
 # Add any project specific keep options here:
+  -libraryjars libs/BmobPay_v3.2.0_170602.jar
+  -keepclasseswithmembers class c.b.** { *; }
+  -keep interface c.b.PListener{ *; }
+  -keep interface c.b.QListener{ *; }
 
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
