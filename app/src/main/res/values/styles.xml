@@ -25,6 +25,17 @@
         <item name="android:background">?attr/selectableItemBackground</item>
     </style>
 
+    <!--我的item样式-->
+    <style name="ItemExample" parent="rippleStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/dark</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawableRight">@drawable/ic_keyboard_arrow_right_grey_500_24dp</item>
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+    </style>
+
     <!-- ToolBar菜单样式 -->
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
         <item name="actionMenuTextColor">@color/dark</item> <!--  敲定颜色-->
@@ -33,7 +44,7 @@
 
     <style name="hintAppearance" parent="TextAppearance.AppCompat">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
     <style name="EditTextTheme">

@@ -1,38 +1,38 @@
 package com.pikachu.convenientdelivery.me;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.pikachu.convenientdelivery.FollowerActivity;
-import com.pikachu.convenientdelivery.FollowingActivity;
-import com.pikachu.convenientdelivery.LikeActivity;
-import com.pikachu.convenientdelivery.MyProfileActivity;
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.BaseFragment;
 import com.pikachu.convenientdelivery.databinding.FragmentMeBinding;
+import com.pikachu.convenientdelivery.model.User;
+import com.pikachu.convenientdelivery.util.ImageLoader;
+
+import cn.bmob.v3.BmobUser;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 我的
  */
 
-public class MeFragment extends BaseFragment<FragmentMeBinding> implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+public class MeFragment extends BaseFragment<FragmentMeBinding> implements View.OnClickListener {
 
     public static final String ARGUMENT = "argument";
 
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private ImageView headShot;
-    private TextView name;
-    private TextView whatsUp;
-    private ImageButton myProfile;
+    private TextView tvNick;
+    private TextView tvIntro;
+    private TextView tvLogout;
+    private TextView tvPub;
+    private TextView tvFollows;
+    private TextView tvFans;
+    private CircleImageView ivAvatar;
     private LinearLayout following;
     private LinearLayout follower;
     private LinearLayout like;
+    private LinearLayout llMyInfo;
 
     public static MeFragment newInstance(String argument) {
         Bundle bundle = new Bundle();
@@ -42,40 +42,69 @@ public class MeFragment extends BaseFragment<FragmentMeBinding> implements Swipe
         return meFragment;
     }
 
+
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    protected void init() {
+        super.init();
         initView();
+        initListener();
     }
-
-
 
     private void initView() {
-        swipeRefreshLayout = bindingView.swipeRefreshLayout;
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        headShot = bindingView.headShot;
-        name = bindingView.name;
-        whatsUp = bindingView.whatsUp;
-        myProfile = bindingView.myProfile;
-        myProfile.setOnClickListener(this);
+        ivAvatar = bindingView.ivAvatar;
+        tvNick = bindingView.tvNick;
+        tvIntro = bindingView.tvIntro;
+        llMyInfo = bindingView.llMyInfo;
+        tvLogout = bindingView.tvLogout;
         following = bindingView.following;
-        following.setOnClickListener(this);
         follower = bindingView.follower;
-        follower.setOnClickListener(this);
         like = bindingView.like;
-        like.setOnClickListener(this);
+        tvFans = bindingView.tvFans;
+        tvFollows = bindingView.tvFollows;
+        tvPub = bindingView.tvPub;
+    }
+
+    private void initDatas() {
+        User user = BmobUser.getCurrentUser(User.class);
+        if (user != null) {
+            if (user.getAvatar() != null) {
+                ImageLoader.with(getContext(), user.getAvatar().getUrl(), ivAvatar);
+            } else {
+                ivAvatar.setImageResource(R.drawable.ic_account_circle_grey_300_36dp);
+            }
+            tvNick.setText(user.getNick());
+            tvIntro.setText(user.getIntro());
+            tvPub.setText("23");
+            tvFollows.setText("14");
+            tvFans.setText("26");
+        } else {
+            ivAvatar.setImageResource(R.drawable.ic_account_circle_grey_300_36dp);
+            tvNick.setText("请登录");
+            tvFans.setText("0");
+            tvFollows.setText("0");
+            tvPub.setText("0");
+        }
+
     }
 
     @Override
-    public void onRefresh() {
-        swipeRefreshLayout.setRefreshing(false);
+    public void onResume() {
+        super.onResume();
+        initDatas();
+    }
+
+    private void initListener() {
+        llMyInfo.setOnClickListener(this);
+        tvLogout.setOnClickListener(this);
+        following.setOnClickListener(this);
+        follower.setOnClickListener(this);
+        like.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.my_profile:
+            case R.id.ll_myInfo:
                 MyProfileActivity.start(getActivity());
                 break;
             case R.id.following:
@@ -86,6 +115,11 @@ public class MeFragment extends BaseFragment<FragmentMeBinding> implements Swipe
                 break;
             case R.id.like:
                 LikeActivity.start(getActivity());
+                break;
+            case R.id.tv_logout:
+                BmobUser.logOut();
+                showToast("退出登录");
+                initDatas();
                 break;
         }
     }

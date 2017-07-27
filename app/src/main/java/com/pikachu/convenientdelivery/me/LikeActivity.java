@@ -1,26 +1,28 @@
-package com.pikachu.convenientdelivery;
+package com.pikachu.convenientdelivery.me;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.BaseActivity;
-import com.pikachu.convenientdelivery.databinding.ActivityMyProfileBinding;
+import com.pikachu.convenientdelivery.databinding.ActivityLikeBinding;
 
 /**
- * My Profile
+ * Like
  */
 
-public class MyProfileActivity extends BaseActivity<ActivityMyProfileBinding> {
+public class LikeActivity extends BaseActivity<ActivityLikeBinding> implements SwipeRefreshLayout.OnRefreshListener {
 
     private Toolbar toolbar;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         initView();
@@ -28,11 +30,11 @@ public class MyProfileActivity extends BaseActivity<ActivityMyProfileBinding> {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_my_profile;
+        return R.layout.activity_like;
     }
 
     public static void start(Context context) {
-        Intent intent = new Intent(context, MyProfileActivity.class);
+        Intent intent = new Intent(context, LikeActivity.class);
         context.startActivity(intent);
     }
 
@@ -40,6 +42,9 @@ public class MyProfileActivity extends BaseActivity<ActivityMyProfileBinding> {
         toolbar = bindingView.toolbar;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        swipeRefreshLayout = bindingView.swipeRefreshLayout;
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
 
     @Override
@@ -57,6 +62,11 @@ public class MyProfileActivity extends BaseActivity<ActivityMyProfileBinding> {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
 }
