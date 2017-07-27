@@ -53,17 +53,17 @@ public abstract class BaseActivity<VB extends ViewDataBinding> extends AppCompat
      * 封装界面跳转
      */
 
-    public void jumpTo(Class<?> clazz,boolean isFinish){
-        Intent intent = new Intent(this,clazz);
+    public void jumpTo(Class<?> clazz, boolean isFinish) {
+        Intent intent = new Intent(this, clazz);
         startActivity(intent);
-        if(isFinish){
+        if(isFinish) {
             finish();
         }
     }
 
-    public void jumpTo(Intent intent,boolean isFinish){
+    public void jumpTo(Intent intent, boolean isFinish) {
         startActivity(intent);
-        if(isFinish){
+        if(isFinish) {
             finish();
         }
     }

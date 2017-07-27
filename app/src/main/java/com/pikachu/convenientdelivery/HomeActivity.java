@@ -82,11 +82,21 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        locationClient.onDestroy();
+    }
+
+    @Override
     protected int getLayoutId() {
         return R.layout.activity_home;
     }
 
     private void initView() {
+        if (DBManager.getPickedCity().equals("选择城市")) {
+            Intent intent = new Intent(this, CityPickerActivity.class);
+            startActivityForResult(intent, 0);
+        }
         bottomNavigationView = bindingView.bottomNavigationView;
         bottomNavigationView.findViewById(R.id.feature).performClick();
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
@@ -212,12 +222,8 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
      */
     private void checkPermissions(String... permissions) {
         List<String> needRequestPermissionList = findDeniedPermissions(permissions);
-        if (null != needRequestPermissionList
-                && needRequestPermissionList.size() > 0) {
-            ActivityCompat.requestPermissions(this,
-                    needRequestPermissionList.toArray(
-                            new String[needRequestPermissionList.size()]),
-                    PERMISSION_REQUEST_CODE);
+        if (null != needRequestPermissionList && needRequestPermissionList.size() > 0) {
+            ActivityCompat.requestPermissions(this, needRequestPermissionList.toArray(new String[needRequestPermissionList.size()]), PERMISSION_REQUEST_CODE);
         }
     }
 
@@ -232,18 +238,14 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
     private List<String> findDeniedPermissions(String[] permissions) {
         List<String> needRequestPermissionList = new ArrayList<String>();
         for (String perm : permissions) {
-            if (ContextCompat.checkSelfPermission(this,
-                    perm) != PackageManager.PERMISSION_GRANTED
-                    || ActivityCompat.shouldShowRequestPermissionRationale(
-                    this, perm)) {
-                needRequestPermissionList.add(perm);
+            if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED || ActivityCompat.shouldShowRequestPermissionRationale(this, perm)) {needRequestPermissionList.add(perm);
             }
         }
         return needRequestPermissionList;
     }
 
     /**
-     * 检测是否说有的权限都已经授权
+     * 检测是否所有的权限都已经授权
      * @param grantResults
      * @return
      * @since 2.5.0
@@ -308,8 +310,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
      *
      */
     private void startAppSettings() {
-        Intent intent = new Intent(
-                Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.parse("package:" + getPackageName()));
         startActivity(intent);
     }
@@ -317,7 +318,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK){
-            this.finish();
+            finish();
             return true;
         }
         return super.onKeyDown(keyCode, event);

@@ -10,6 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -49,17 +51,23 @@ public class ChatsFragment extends BaseFragment<FragmentChatsBinding> implements
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         initView();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Animation animationUp = AnimationUtils.loadAnimation(getContext(), R.anim.scale_up);
+        fab.startAnimation(animationUp);
+        fab.setVisibility(View.VISIBLE);
+    }
 
     private void initView() {
         swipeRefreshLayout = bindingView.swipeRefreshLayout;
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setOnRefreshListener(this);
         toolbar = bindingView.toolbar;
-        toolbar.inflateMenu(R.menu.toolbar_feature);
+        toolbar.inflateMenu(R.menu.toolbar_search);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);

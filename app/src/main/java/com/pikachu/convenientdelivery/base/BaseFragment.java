@@ -10,9 +10,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-
-import com.pikachu.convenientdelivery.R;
 
 public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment {
 
@@ -29,7 +26,7 @@ public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        bindingView = DataBindingUtil.inflate(inflater,this.getLayoutId(),container,false);
+        bindingView = DataBindingUtil.inflate(inflater, this.getLayoutId(), container, false);
 
         init();
 
@@ -62,14 +59,12 @@ public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment 
      * 封装界面跳转
      */
 
-    public void jumpTo(Class<?> clazz,boolean isFinish){
-        baseActivity.jumpTo(clazz,isFinish);
+    public void jumpTo(Class<?> clazz, boolean isFinish){
+        baseActivity.jumpTo(clazz, isFinish);
     }
 
-    public void jumpTo(Intent intent,boolean isFinish){
-        baseActivity.jumpTo(intent,isFinish);
+    public void jumpTo(Intent intent, boolean isFinish){
+        baseActivity.jumpTo(intent, isFinish);
     }
-
-
 
 }

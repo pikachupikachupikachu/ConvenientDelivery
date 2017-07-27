@@ -16,13 +16,14 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.pikachu.convenientdelivery.adapter.CityListAdapter;
-import com.pikachu.convenientdelivery.adapter.ResultListAdapter;
+import com.pikachu.convenientdelivery.adapter.CityResultListAdapter;
 import com.pikachu.convenientdelivery.base.BaseActivity;
 import com.pikachu.convenientdelivery.databinding.ActivityCityPickerBinding;
 import com.pikachu.convenientdelivery.databinding.CpViewNoSearchResultBinding;
@@ -41,8 +42,6 @@ import java.util.List;
 
 public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> implements View.OnClickListener, SearchView.OnQueryTextListener {
 
-    public static final String KEY_PICKED_CITY = "picked_city";
-
     private LinearLayout rootView;
     private Toolbar toolbar;
     private SearchView searchView;
@@ -52,7 +51,7 @@ public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> 
     private ViewGroup emptyView;
 
     private CityListAdapter cityAdapter;
-    private ResultListAdapter resultAdapter;
+    private CityResultListAdapter cityResultAdapter;
     private List<City> allCities;
     private DBManager dbManager;
 
@@ -106,7 +105,7 @@ public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> 
             public void onLocateClick() {
             }
         });
-        resultAdapter = new ResultListAdapter(this, null);
+        cityResultAdapter = new CityResultListAdapter(this, null);
     }
 
     private void initView() {
@@ -132,11 +131,11 @@ public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> 
         CpViewNoSearchResultBinding binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.cp_view_no_search_result, null, false);
         emptyView = binding.emptyView;
         resultListView = bindingView.listViewSearchResult;
-        resultListView.setAdapter(resultAdapter);
+        resultListView.setAdapter(cityResultAdapter);
         resultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                back(resultAdapter.getItem(position).getName());
+                back(cityResultAdapter.getItem(position).getName());
             }
         });
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -179,6 +178,15 @@ public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> 
     }
 
     @Override
+    public void onBackPressed() {
+        if (!DBManager.getPickedCity().equals("选择城市")) {
+            finish();
+        } else {
+            Toast.makeText(this, "请选择城市", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -218,7 +226,7 @@ public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> 
                 emptyView.setVisibility(View.VISIBLE);
             } else {
                 emptyView.setVisibility(View.GONE);
-                resultAdapter.changeData(result);
+                cityResultAdapter.changeData(result);
             }
         }
         return true;

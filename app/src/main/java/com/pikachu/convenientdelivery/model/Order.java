@@ -1,64 +1,128 @@
 package com.pikachu.convenientdelivery.model;
 
-import android.graphics.Bitmap;
-import android.media.Image;
-
 import cn.bmob.v3.BmobObject;
 
 /**
- * Created by JinBo on 2017/7/20.
+ * Order
  */
 
 public class Order extends BmobObject {
-    private String requirement;
-    private String message;
-    private String goods;
-    private String locale;
-    private String address;
-    private String pay;
-    private String ImagePath;
 
-    //true 代表具体金额 false代表按商品支付
-    private boolean priceway;
+    private String goodsName;
+    private String goodsDetail;
+    private String goodsImagePath;
+    private boolean isRewardDefault = true;
+    private Double reward;
+    private String shipperName;
+    private String shipperPhone;
+    private String recipientName;
+    private String recipientPhone;
+    private boolean isGoodsSpecific;
+    private boolean isAddressSpecific;
+    private String purchasingAddress;
+    private String shippingAddress;
 
-    public String getRequirement() {
-        return requirement;
+    public String getGoodsName() {
+        return goodsName;
     }
-    public void setRequirement(String requirement) {
-        this.requirement = requirement;
-    }
-    public  String getMessage(){
-        return  message;
-    }
-    public void setMessage(String message){
-        this.message = message;
-    }
-    public  String getGoods(){
-        return  goods;
-    }
-    public void setGoods(String goods){
-        this.goods = goods;
-    }
-    public  String getLocale(){
-        return  locale;
-    }
-    public void setLocale(String locale){
-        this.locale = locale;
-    }
-    public String getAddress() {
-        return address;
-    }
-    public void setAddress(String address) {
-        this.address = address;
-    }
-    public String getPay(){return  pay;}
-    public  void  setPay(String pay){
-        this.pay = pay;
-    }
-    public String getImagePath(){return ImagePath;}
-    public void setImagePath(String  ImagePath){ this.ImagePath = ImagePath;}
-    public boolean getPriceway(){return priceway;}
-    public void setPriceway(boolean priceway){this.priceway = priceway;}
 
+    public void setGoodsName(String goodsName) {
+        this.goodsName = goodsName;
+    }
 
+    public String getGoodsDetail() {
+        return goodsDetail;
+    }
+
+    public void setGoodsDetail(String goodsDetail) {
+        this.goodsDetail = goodsDetail;
+    }
+
+    public String getGoodsImagePath() {
+        return goodsImagePath;
+    }
+
+    public void setGoodsImagePath(String goodsImagePath) {
+        this.goodsImagePath = goodsImagePath;
+    }
+
+    public boolean isRewardDefault() {
+        return isRewardDefault;
+    }
+
+    public void setRewardDefault(boolean rewardDefault) {
+        isRewardDefault = rewardDefault;
+    }
+
+    public Double getReward() {
+        return reward;
+    }
+
+    public void setReward(Double reward) {
+        this.reward = reward;
+    }
+
+    public String getShipperName() {
+        return shipperName;
+    }
+
+    public void setShipperName(String shipperName) {
+        this.shipperName = shipperName;
+    }
+
+    public String getShipperPhone() {
+        return shipperPhone;
+    }
+
+    public void setShipperPhone(String shipperPhone) {
+        this.shipperPhone = shipperPhone;
+    }
+
+    public String getRecipientName() {
+        return recipientName;
+    }
+
+    public void setRecipientName(String recipientName) {
+        this.recipientName = recipientName;
+    }
+
+    public String getRecipientPhone() {
+        return recipientPhone;
+    }
+
+    public void setRecipientPhone(String recipientPhone) {
+        this.recipientPhone = recipientPhone;
+    }
+
+    public boolean isGoodsSpecific() {
+        return isGoodsSpecific;
+    }
+
+    public void setGoodsSpecific(boolean goodsSpecific) {
+        isGoodsSpecific = goodsSpecific;
+    }
+
+    public boolean isAddressSpecific() {
+        return isAddressSpecific;
+    }
+
+    public void setAddressSpecific(boolean addressSpecific) {
+        isAddressSpecific = addressSpecific;
+    }
+
+    public String getPurchasingAddress() {
+        return purchasingAddress;
+    }
+
+    public void setPurchasingAddress(String purchasingAddress) {
+        this.purchasingAddress = purchasingAddress;
+    }
+
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
 }

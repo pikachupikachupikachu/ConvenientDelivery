@@ -1,11 +1,10 @@
 package com.pikachu.convenientdelivery.order;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,10 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.app.ProgressDialog;
-import android.app.Activity;
 import android.widget.Toast;
-
 
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.BaseActivity;
@@ -34,10 +30,9 @@ import java.io.InputStream;
 
 import c.b.BP;
 import c.b.PListener;
-import c.b.QListener;
 
 /**
- * Created by JinBo on 2017/7/20.
+ *
  */
 
 public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBinding> implements View.OnClickListener  {
@@ -57,14 +52,15 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
     private ImageView picture;
     private CardView addressView;
     private boolean priceway;
-
     
     ProgressDialog dialog;
 
     Order order = new Order();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         BP.init("560ac477463924eba4cfca3a00353215");
         initView();
         MyOrder();
@@ -72,16 +68,20 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
 
     private void MyOrder() {
         Intent intent = getIntent();
-        order=(Order) intent.getSerializableExtra("Order");
-        requirement.setText(order.getRequirement());
-        message.setText(order.getMessage());
-        goods.setText(order.getGoods());
-        locale.setText(order.getLocale());
-        pay.setText(order.getPay());
-        Bitmap bitmap = BitmapFactory.decodeFile(order.getImagePath());
-        picture.setImageBitmap(bitmap);
+        order = (Order) intent.getSerializableExtra("order");
+        requirement.setText(order.getGoodsName());
+        message.setText(order.getGoodsDetail());
+//        goods.setText(order.getGoods());
+//        locale.setText(order.getLocale());
+//        pay.setText(order.getPay());
+//        Bitmap bitmap = BitmapFactory.decodeFile(order.getImagePath());
+//        picture.setImageBitmap(bitmap);
+//        priceway = order.getPriceway();
+    }
 
-        priceway = order.getPriceway();
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_order_confirm;
     }
 
     private void initView() {
@@ -104,12 +104,18 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
         publish.setOnClickListener(this);
         cancel.setOnClickListener(this);
         addressView.setOnClickListener(this);
-        if(priceway){
+        if (priceway) {
             percent.setVisibility(View.GONE);
-        }else{
+        } else {
             percent.setVisibility(View.VISIBLE);
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
     @Override
@@ -121,10 +127,6 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_order_confirm;
     }
 
     @Override
@@ -157,13 +159,13 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
             e.printStackTrace();
         }
 
-        BP.pay(order.getGoods(), order.getMessage(),Double.parseDouble(order.getPay()), true, new PListener(){
+        BP.pay(order.getGoodsName(), order.getGoodsDetail(), order.getReward(), true, new PListener(){
             // 因为网络等原因,支付结果未知(小概率事件),出于保险起见稍后手动查询
             @Override
             public void unknow() {
                 Toast.makeText(OrderConfirmActivity.this, "支付结果未知,请稍后手动查询", Toast.LENGTH_SHORT)
                         .show();
-                tv.append(order.getGoods() + "'s pay status is unknow\n\n");
+                tv.append(order.getGoodsName() + "'s pay status is unknow\n\n");
                 hideDialog();
             }
 
@@ -171,7 +173,7 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
             @Override
             public void succeed() {
                 Toast.makeText(OrderConfirmActivity.this, "支付成功!", Toast.LENGTH_SHORT).show();
-                tv.append(order.getGoods() + "'s pay status is success\n\n");
+                tv.append(order.getGoodsName() + "'s pay status is success\n\n");
                 hideDialog();
             }
 
@@ -180,7 +182,7 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
             public void orderId(String orderId) {
                 // 此处应该保存订单号,比如保存进数据库等,以便以后查询
                 orderID.setText(orderId);
-                tv.append(order.getGoods() + "'s orderid is " + orderId + "\n\n");
+                tv.append(order.getGoodsName() + "'s orderid is " + orderId + "\n\n");
                 showDialog("获取订单成功!请等待跳转到支付页面~");
             }
 
@@ -201,7 +203,7 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
                     Toast.makeText(OrderConfirmActivity.this, "支付中断!", Toast.LENGTH_SHORT)
                             .show();
                 }
-                tv.append(order.getGoods() + "'s pay status is fail, error code is \n"
+                tv.append(order.getGoodsName() + "'s pay status is fail, error code is \n"
                        + code + " ,reason is " + reason + "\n\n");
                 hideDialog();
             }
@@ -209,12 +211,12 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
     }
 
 
-    private static final int REQUESTPERMISSION = 101;
+    private static final int REQUEST_PERMISSION = 101;
 
     private void installApk(String s) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             //申请权限
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUESTPERMISSION);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION);
         } else {
             installBmobPayPlugin(s);
         }
@@ -223,7 +225,7 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUESTPERMISSION) {
+        if (requestCode == REQUEST_PERMISSION) {
             if (permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     installBmobPayPlugin("bp.db");

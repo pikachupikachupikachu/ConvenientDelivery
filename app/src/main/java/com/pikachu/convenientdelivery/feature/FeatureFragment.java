@@ -74,7 +74,7 @@ public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implem
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setOnRefreshListener(this);
         toolbar = bindingView.toolbar;
-        toolbar.inflateMenu(R.menu.toolbar_feature);
+        toolbar.inflateMenu(R.menu.toolbar_search);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -98,7 +98,7 @@ public class FeatureFragment extends BaseFragment<FragmentFeatureBinding> implem
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        inflater.inflate(R.menu.toolbar_feature, menu);
+        inflater.inflate(R.menu.toolbar_search, menu);
         searchView = (SearchView) MenuItemCompat.getActionView(toolbar.getMenu().findItem(R.id.action_search));
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));

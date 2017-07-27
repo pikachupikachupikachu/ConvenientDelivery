@@ -1,33 +1,34 @@
 package com.pikachu.convenientdelivery.order;
 
-import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.IdRes;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.provider.DocumentFile;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.BaseActivity;
 import com.pikachu.convenientdelivery.databinding.ActivityOrderBinding;
 import com.pikachu.convenientdelivery.model.Order;
+import com.pikachu.convenientdelivery.model.RecipientInfo;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.exception.BmobException;
@@ -44,26 +46,27 @@ import cn.bmob.v3.listener.SaveListener;
  * 下单
  */
 
-public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements View.OnClickListener {
+public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, Switch.OnCheckedChangeListener, TextWatcher {
 
     private Toolbar toolbar;
-    private Button confirmord;
-    private EditText requirement;
-    private EditText message;
-    private EditText goods;
-    private EditText locale;
-    private EditText pay;
+    private FloatingActionButton confirm;
+    private EditText goodsName;
+    private EditText goodsDetail;
+    private ImageView goodsPhoto;
+    private EditText reward;
+    private RadioGroup rewardSelect;
+    private Switch isGoodsSpecific;
+    private Switch isAddressSpecific;
+    private TextView purchasingAddressText;
+    private TextView recipientInfoText;
 
-    private RadioGroup rg;
-    private TextView percent;
-    private ImageButton photo;
-    private ImageView myphoto;
-    private ImageButton choose_locale;
+    private Order order = new Order();
+    private RecipientInfo recipientInfo;
 
+    public static final int CHOOSE_PHOTO = 1;
+    public static final int CHOOSE_LOCALE = 2;
+    public static final int CHOOSE_SHIPPER_INFO = 3;
 
-
-    Order order =new Order();
-    public static  final int CHOOSE_PHOTO = 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,27 +74,41 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
         initView();
     }
 
-    private void getOrder() {
-        order.setRequirement(requirement.getText().toString());
-        order.setMessage(message.getText().toString());
-        order.setGoods(goods.getText().toString());
-        order.setLocale(locale.getText().toString());
-        order.setPay(pay.getText().toString());
-        order.save(new SaveListener<String>() {
-            @Override
-            public void done(String objectId, BmobException e) {
-                if(e==null){
-                    Toast.makeText(OrderActivity.this, "添加数据成功，返回objectId为："+objectId, Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(OrderActivity.this,"创建数据失败"+e.getMessage() , Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_order;
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+        switch (checkedId) {
+            case R.id.rg1:
+                order.setRewardDefault(true);
+                break;
+            case R.id.rg2:
+                order.setRewardDefault(false);
+                break;
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        switch (buttonView.getId()) {
+            case R.id.is_goods_specific:
+                if (isChecked) {
+                    order.setGoodsSpecific(true);
+                } else {
+                    order.setGoodsSpecific(false);
+                }
+                break;
+            case R.id.is_address_specific:
+                if (isChecked) {
+                    order.setAddressSpecific(true);
+                } else {
+                    order.setAddressSpecific(false);
+                }
+                break;
+        }
     }
 
     public static void start(Context context) {
@@ -100,38 +117,55 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
     }
 
     private void initView() {
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         toolbar = bindingView.toolbar;
+        toolbar.setNavigationIcon(R.drawable.nav_close);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        confirmord = bindingView.confirmord;
-        requirement = bindingView.requirement;
-        message = bindingView.message;
-        goods = bindingView.goods;
-        locale = bindingView.locale;
-        pay = bindingView.pay;
-        rg = bindingView.rg;
-        percent = bindingView.percent;
-        photo = bindingView.photo;
-        myphoto = bindingView.myphoto;
-        choose_locale = bindingView.chooseLocale;
+        confirm = bindingView.fab;
+        confirm.setOnClickListener(this);
+        goodsName = bindingView.goodsName;
+        goodsName.addTextChangedListener(this);
+        goodsDetail = bindingView.goodsDetail;
+        goodsDetail.addTextChangedListener(this);
+        goodsPhoto = bindingView.goodsPhoto;
+        goodsPhoto.setOnClickListener(this);
+        reward = bindingView.reward;
+        reward.addTextChangedListener(this);
+        rewardSelect = bindingView.rewardSelect;
+        rewardSelect.setOnCheckedChangeListener(this);
+        isGoodsSpecific = bindingView.isGoodsSpecific;
+        isGoodsSpecific.setOnCheckedChangeListener(this);
+        isAddressSpecific = bindingView.isAddressSpecific;
+        isAddressSpecific.setOnCheckedChangeListener(this);
+        purchasingAddressText = bindingView.purchasingAddressText;
+        purchasingAddressText.setOnClickListener(this);
+        purchasingAddressText.addTextChangedListener(this);
+        recipientInfoText = bindingView.recipientInfoText;
+        recipientInfoText.setOnClickListener(this);
+        recipientInfoText.addTextChangedListener(this);
+    }
 
-        confirmord.setOnClickListener(this);
-        photo.setOnClickListener(this);
-        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
+    private void getOrder() {
+        order.setGoodsName(goodsName.getText().toString());
+        order.setGoodsDetail(goodsDetail.getText().toString());
+//        order.setGoodsImagePath();
+        if (order.isRewardDefault()) {
+            order.setReward(Double.parseDouble(reward.getText().toString()));
+        } else {
+            order.setReward(0.0);
+        }
+
+        order.save(new SaveListener<String>() {
             @Override
-            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
-                if(i == R.id.rg1)
-                {
-                    percent.setVisibility(View.GONE);
-                    order.setPriceway(true);
-                }
-                else if (i == R.id.rg2){
-                    percent.setVisibility(View.VISIBLE);
-                    order.setPriceway(false);
+            public void done(String objectId, BmobException e) {
+                if (e == null) {
+                    Toast.makeText(OrderActivity.this, "添加数据成功，返回objectId为：" + objectId, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(OrderActivity.this, "创建数据失败" + e.getMessage() , Toast.LENGTH_LONG).show();
                 }
             }
         });
-
     }
 
     @Override
@@ -149,47 +183,63 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
     public void onClick(View v) {
         switch (v.getId()) {
             //确定订单
-            case R.id.confirmord:
+            case R.id.fab:
                 getOrder();
-                Bundle data =new Bundle();
-                data.putSerializable("Order",order);
-                Intent intent = new Intent(v.getContext(), OrderConfirmActivity.class);
-                intent.putExtras(data);
-                v.getContext().startActivity(intent);
+                Bundle data = new Bundle();
+                data.putSerializable("order", order);
+                Intent intentToOrderConfirm = new Intent(this, OrderConfirmActivity.class);
+                intentToOrderConfirm.putExtras(data);
+                startActivity(intentToOrderConfirm);
                 break;
             //打开系统相册
-            case R.id.photo:
-                if(ContextCompat.checkSelfPermission(OrderActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(OrderActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
-                }
-                else{
-                    openAlbum();
-                }
+            case R.id.goods_photo:
+                openAlbum();
                 break;
-            //搜索选择地点
-            case R.id.choose_locale:
+            case R.id.purchasing_address_text:
+                Intent intentToChooseLocale = new Intent(this, ChooseLocaleActivity.class);
+                String address = purchasingAddressText.getText().toString();
+                if (!TextUtils.isEmpty(address)) {
+                    intentToChooseLocale.putExtra("address", address);
+                }
+                startActivityForResult(intentToChooseLocale, CHOOSE_LOCALE);
+                break;
+            case R.id.recipient_info_text:
+//                Intent intentToShipperInfo = new Intent(this, );
                 break;
         }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if (TextUtils.isEmpty(goodsName.getText()) || TextUtils.isEmpty(goodsDetail.getText()) || TextUtils.isEmpty(reward.getText()) || TextUtils.isEmpty(purchasingAddressText.getText())) {
+            if (confirm.getVisibility() == View.VISIBLE) {
+                Animation animationDown = AnimationUtils.loadAnimation(this, R.anim.scale_down);
+                confirm.startAnimation(animationDown);
+                confirm.setVisibility(View.GONE);
+            }
+        } else {
+            if (confirm.getVisibility() == View.GONE) {
+                Animation animationUp = AnimationUtils.loadAnimation(this, R.anim.scale_up);
+                confirm.startAnimation(animationUp);
+                confirm.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
     }
 
     private void openAlbum() {
         Intent intent = new Intent("android.intent.action.GET_CONTENT");
         intent.setType("image/*");
         startActivityForResult(intent, CHOOSE_PHOTO); // 打开相册
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case 1:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    openAlbum();
-                } else {
-                    Toast.makeText(this, "You denied the permission", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            default:
-        }
     }
 
     @Override
@@ -204,6 +254,28 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
                     } else {
                         // 4.4以下系统使用这个方法处理图片
                         handleImageBeforeKitKat(data);
+                    }
+                }
+                break;
+            case CHOOSE_LOCALE:
+                if (resultCode == RESULT_OK) {
+                    if (data.hasExtra("address")) {
+                        String address = data.getStringExtra("address");
+                        purchasingAddressText.setText(address);
+                        order.setPurchasingAddress(address);
+                    }
+                }
+                break;
+            case CHOOSE_SHIPPER_INFO:
+                if (resultCode == RESULT_OK) {
+                    if (data.hasExtra("name") && data.hasExtra("phone") && data.hasExtra("address")) {
+                        String name = data.getStringExtra("name");
+                        order.setShipperName(name);
+                        String phone = data.getStringExtra("phone");
+                        order.setShipperPhone(phone);
+                        String address = data.getStringExtra("address");
+                        order.setShippingAddress(address);
+                        recipientInfoText.setText("收货人： " + name + "\n联系方式： " + phone + "\n收货地址： " + address);
                     }
                 }
                 break;
@@ -254,7 +326,7 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
             }
             cursor.close();
         }
-        order.setImagePath(path);
+        order.setGoodsImagePath(path);
         return path;
     }
 
@@ -262,7 +334,7 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
     private void displayImage(String imagePath) {
         if (imagePath != null) {
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-            myphoto.setImageBitmap(bitmap);
+            goodsPhoto.setImageBitmap(bitmap);
         } else {
             Toast.makeText(this, "failed to get image", Toast.LENGTH_SHORT).show();
         }

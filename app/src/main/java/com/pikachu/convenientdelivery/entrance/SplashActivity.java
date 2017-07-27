@@ -1,10 +1,9 @@
 package com.pikachu.convenientdelivery.entrance;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.pikachu.convenientdelivery.HomeActivity;
 import com.pikachu.convenientdelivery.R;

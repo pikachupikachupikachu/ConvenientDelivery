@@ -13,14 +13,14 @@ import com.pikachu.convenientdelivery.model.City;
 import java.util.List;
 
 /**
- * ResultListAdapter
+ * CityResultListAdapter
  */
-public class ResultListAdapter extends BaseAdapter {
+public class CityResultListAdapter extends BaseAdapter {
     
     private Context context;
     private List<City> cities;
 
-    public ResultListAdapter(Context context, List<City> cities) {
+    public CityResultListAdapter(Context context, List<City> cities) {
         this.cities = cities;
         this.context = context;
     }
