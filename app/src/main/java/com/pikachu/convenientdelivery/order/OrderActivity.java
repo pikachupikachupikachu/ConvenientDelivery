@@ -258,6 +258,7 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
         return path;
     }
 
+
     private void displayImage(String imagePath) {
         if (imagePath != null) {
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);

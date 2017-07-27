@@ -141,6 +141,7 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
         }
     }
 
+
     //pay 方法
     private void payOrder() {
         showDialog("正在获取订单...\nSDK版本号:" + BP.getPaySdkVersion());

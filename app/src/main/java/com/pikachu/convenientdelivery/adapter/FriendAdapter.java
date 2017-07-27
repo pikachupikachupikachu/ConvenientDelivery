@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.adapter.BaseRecyclerViewAdapter;
 import com.pikachu.convenientdelivery.base.adapter.BaseRecyclerViewHolder;
-import com.pikachu.convenientdelivery.databinding.ItemFriendBinding;
+import com.pikachu.convenientdelivery.databinding.ItemContactBinding;
 import com.pikachu.convenientdelivery.db.Friend;
 
 /**
@@ -22,10 +22,10 @@ public class FriendAdapter extends BaseRecyclerViewAdapter<Friend> {
         if (context == null) {
             context = parent.getContext();
         }
-        return new ViewHolder(parent, R.layout.item_friend);
+        return new ViewHolder(parent, R.layout.item_contact);
     }
 
-    private class ViewHolder extends BaseRecyclerViewHolder<Friend, ItemFriendBinding> {
+    private class ViewHolder extends BaseRecyclerViewHolder<Friend, ItemContactBinding> {
 
         ViewHolder(ViewGroup parent, int layout) {
             super(parent, layout);

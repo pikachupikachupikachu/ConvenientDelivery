@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.adapter.BaseRecyclerViewAdapter;
 import com.pikachu.convenientdelivery.base.adapter.BaseRecyclerViewHolder;
-import com.pikachu.convenientdelivery.databinding.ItemChatBinding;
+import com.pikachu.convenientdelivery.databinding.ItemConversationBinding;
 import com.pikachu.convenientdelivery.db.Chat;
 
 /**
@@ -22,10 +22,10 @@ public class ChatAdapter extends BaseRecyclerViewAdapter<Chat> {
         if (context == null) {
             context = parent.getContext();
         }
-        return new ViewHolder(parent, R.layout.item_chat);
+        return new ViewHolder(parent, R.layout.item_conversation);
     }
 
-    private class ViewHolder extends BaseRecyclerViewHolder<Chat, ItemChatBinding> {
+    private class ViewHolder extends BaseRecyclerViewHolder<Chat, ItemConversationBinding> {
 
         ViewHolder(ViewGroup parent, int layout) {
             super(parent, layout);
