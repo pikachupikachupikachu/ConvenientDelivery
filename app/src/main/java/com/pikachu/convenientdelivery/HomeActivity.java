@@ -197,7 +197,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
     public void onNavigationItemReselected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.feature:
-                featureFragment.onRefresh();
+
                 break;
             case R.id.favor:
                 break;

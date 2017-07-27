@@ -30,9 +30,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--<meta-data-->
-         <!--android:name="com.amap.api.v2.apikey"-->
-         <!--android:value="86c5f96ada10f46868bb224d3ca3929c" />-->
+        <!-- <meta-data -->
+        <!-- android:name="com.amap.api.v2.apikey" -->
+        <!-- android:value="86c5f96ada10f46868bb224d3ca3929c" /> -->
         <activity android:name="cn.bmob.pay.v3.act.PayAct" />
         <activity
             android:name=".HomeActivity"
@@ -85,7 +85,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-         <!--<service android:name="com.amap.api.location.APSService" />-->
+        <!-- <service android:name="com.amap.api.location.APSService" /> -->
+        <activity android:name=".feature.PubDynamicActivity"></activity>
     </application>
 
 </manifest>

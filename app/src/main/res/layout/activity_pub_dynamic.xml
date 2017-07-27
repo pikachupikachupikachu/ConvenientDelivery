@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context="com.pikachu.convenientdelivery.feature.PubDynamicActivity">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/tb_pub_circle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
+                app:theme="@style/ToolbarTheme"
+                app:title="发布动态"></android.support.v7.widget.Toolbar>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/et_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@null"
+                    android:gravity="start"
+                    android:hint="说点什么吧"
+                    android:lineSpacingExtra="8dp"
+                    android:padding="6dp"
+                    android:scrollbars="vertical"
+                    android:text=""
+                    android:textColor="@color/dark"
+                    android:textSize="@dimen/bodyLarge" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/divider" />
+
+                <com.lzy.ninegrid.NineGridView
+                    android:id="@+id/nineGridView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></com.lzy.ninegrid.NineGridView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/iv_photo"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="10dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/photo" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/divider" />
+
+        </LinearLayout>
+
+    </ScrollView>
+</layout>
+
