@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#fbc02d</color>
-    <color name="colorPrimaryDark">#c49000</color>
+    <color name="colorPrimary">#FFDA44</color>
+    <color name="colorPrimaryDark">#fbc02d</color>
     <color name="colorAccent">#ff3d00</color>
 
     <color name="cp_content_bg">#F3F3F3</color>|
@@ -40,4 +40,14 @@
     <color name="color_msg_system_time_bg">#20000000</color>
     <color name="color_1e1e1e">#1e1e1e</color>
     <color name="color_b4">#b4b4b4</color>
+    <color name="black">#000000</color>
+
+    <!--朋友圈色值-->
+    <color name="nick">#517fae</color>
+    <color name="item_bottom_text">#8e8e8e</color>
+    <color name="item_showmore_click">#c6c6c6</color>
+    <color name="line_bg">#e5e5e5</color>
+    <color name="normal_font_color">#1A1A1A</color>
+    <color name="grey">#f2f2f2</color>
+    <color name="blue">#0288d1</color>
 </resources>

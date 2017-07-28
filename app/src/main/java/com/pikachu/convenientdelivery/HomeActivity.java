@@ -197,7 +197,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
     public void onNavigationItemReselected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.feature:
-                featureFragment.onRefresh();
+
                 break;
             case R.id.favor:
                 break;
@@ -207,7 +207,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
                 chatsFragment.onRefresh();
                 break;
             case R.id.me:
-                meFragment.onRefresh();
+
                 break;
             default:
                 break;
@@ -216,7 +216,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
 
     /**
      *
-     * @param needRequestPermissionList
+
      * @since 2.5.0
      *
      */

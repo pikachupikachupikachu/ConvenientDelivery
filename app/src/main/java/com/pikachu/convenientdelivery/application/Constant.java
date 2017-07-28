@@ -6,4 +6,5 @@ package com.pikachu.convenientdelivery.application;
 
 public class Constant {
     public static final String BMOB_APP_KEY = "560ac477463924eba4cfca3a00353215";
+    public static final int LIMIT = 6;
 }
