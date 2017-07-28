@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#FFDA44</color>
     <color name="colorPrimaryDark">#fbc02d</color>
-    <color name="colorAccent">#ff3d00</color>
+    <color name="colorAccent">#FFDA44</color>
 
     <color name="cp_content_bg">#F3F3F3</color>|
     <color name="cp_divider">#E5E5E5</color>

@@ -1,8 +1,6 @@
 package com.pikachu.convenientdelivery.adapter;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;

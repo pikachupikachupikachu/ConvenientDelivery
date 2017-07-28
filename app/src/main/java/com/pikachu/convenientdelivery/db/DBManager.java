@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import com.pikachu.convenientdelivery.application.MyApplication;
 import com.pikachu.convenientdelivery.model.City;
@@ -23,21 +24,6 @@ import java.util.List;
 
 public class DBManager extends BaseObservable {
 
-    private static String pickedCity;
-
-    @Bindable
-    public static String getPickedCity() {
-        if (pickedCity != null && !pickedCity.isEmpty()) {
-            return pickedCity;
-        } else {
-            return getCurrentCity();
-        }
-    }
-
-    public static void setPickedCity(String pickedCity) {
-        DBManager.pickedCity = pickedCity;
-    }
-
     private static final String ASSETS_NAME = "china_cities.db";
     private static final String DB_NAME = "china_cities.db";
     private static final String TABLE_NAME = "city";
@@ -46,6 +32,31 @@ public class DBManager extends BaseObservable {
     private static final int BUFFER_SIZE = 1024;
     private String DB_PATH;
     private Context mContext;
+
+    private static String pickedCity;
+
+    @Bindable
+    public static String getPickedCity() {
+        if (!TextUtils.isEmpty(pickedCity)) {
+            return pickedCity;
+        } else {
+            return getCurrentCity();
+        }
+    }
+
+    public static void setPickedCity(String pickedCity) {
+        DBManager.pickedCity = pickedCity;
+        SharedPreferences.Editor editor = MyApplication.getContext().getSharedPreferences("pref", Context.MODE_PRIVATE).edit();
+        if (!TextUtils.isEmpty(pickedCity)) {
+            editor.putString("picked_city", pickedCity);
+        }
+        editor.apply();
+    }
+
+    public static void init() {
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("pref", Context.MODE_PRIVATE);
+        pickedCity = preferences.getString("picked_city", null);
+    }
 
     public DBManager(Context context) {
         this.mContext = context;
@@ -135,7 +146,7 @@ public class DBManager extends BaseObservable {
 
     public static void updateCurrentCity(String city) {
         SharedPreferences.Editor editor = MyApplication.getContext().getSharedPreferences("pref", Context.MODE_PRIVATE).edit();
-        if (city != null && !city.isEmpty()) {
+        if (!TextUtils.isEmpty(city)) {
             editor.putString("current_city", city);
         }
         editor.apply();

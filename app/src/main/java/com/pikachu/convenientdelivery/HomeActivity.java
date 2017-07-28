@@ -93,6 +93,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
     }
 
     private void initView() {
+        DBManager.init();
         if (DBManager.getPickedCity().equals("选择城市")) {
             Intent intent = new Intent(this, CityPickerActivity.class);
             startActivityForResult(intent, 0);

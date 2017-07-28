@@ -54,7 +54,7 @@ import com.pikachu.convenientdelivery.base.BaseActivity;
 import com.pikachu.convenientdelivery.databinding.ActivityChooseLocaleBinding;
 import com.pikachu.convenientdelivery.db.DBManager;
 import com.pikachu.convenientdelivery.model.Result;
-import com.pikachu.convenientdelivery.util.ToastUtil;
+import com.pikachu.convenientdelivery.util.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -194,7 +194,7 @@ public class ChooseLocaleActivity extends BaseActivity<ActivityChooseLocaleBindi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.clear();
-        getMenuInflater().inflate(R.menu.toolbar_choose_locale, menu);
+        getMenuInflater().inflate(R.menu.toolbar_done, menu);
         return true;
     }
 
@@ -282,7 +282,7 @@ public class ChooseLocaleActivity extends BaseActivity<ActivityChooseLocaleBindi
             adapter.setData(resultList);
             adapter.notifyDataSetChanged();
         } else {
-            ToastUtil.showError(getApplicationContext(), errorCode);
+            ToastUtils.showError(getApplicationContext(), errorCode);
         }
     }
 

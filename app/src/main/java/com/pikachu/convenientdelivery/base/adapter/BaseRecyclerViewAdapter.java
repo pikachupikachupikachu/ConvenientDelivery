@@ -1,6 +1,7 @@
 package com.pikachu.convenientdelivery.base.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
     }
 
     public interface OnItemClickListener<T> {
-        void onClick(T t, int position);
+        void onClick(View view, T t, int position);
     }
 
 }

@@ -4,7 +4,6 @@
 
     <item
         android:id="@+id/action_done"
-        android:icon="@drawable/done"
         android:title="完成"
         app:showAsAction="always" />
 

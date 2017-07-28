@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.amap.api.services.core.AMapException;
 
-public class ToastUtil {
+public class ToastUtils {
 	
 	public static void showError(Context context, int errorCode){
 

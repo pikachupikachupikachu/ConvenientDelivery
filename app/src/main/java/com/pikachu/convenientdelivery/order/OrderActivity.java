@@ -26,6 +26,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Switch;
@@ -58,14 +59,16 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
     private Switch isGoodsSpecific;
     private Switch isAddressSpecific;
     private TextView purchasingAddressText;
+    private ImageButton choosingPurchasingAddress;
     private TextView recipientInfoText;
+    private ImageButton choosingRecipientInfo;
 
     private Order order = new Order();
     private RecipientInfo recipientInfo;
 
     public static final int CHOOSE_PHOTO = 1;
     public static final int CHOOSE_LOCALE = 2;
-    public static final int CHOOSE_SHIPPER_INFO = 3;
+    public static final int CHOOSE_RECIPIENT_INFO = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +96,7 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        setFabButton();
         switch (buttonView.getId()) {
             case R.id.is_goods_specific:
                 if (isChecked) {
@@ -141,9 +145,13 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
         purchasingAddressText = bindingView.purchasingAddressText;
         purchasingAddressText.setOnClickListener(this);
         purchasingAddressText.addTextChangedListener(this);
+        choosingPurchasingAddress = bindingView.choosePurchasingAddress;
+        choosingPurchasingAddress.setOnClickListener(this);
         recipientInfoText = bindingView.recipientInfoText;
         recipientInfoText.setOnClickListener(this);
         recipientInfoText.addTextChangedListener(this);
+        choosingRecipientInfo = bindingView.chooseRecipientInfo;
+        choosingRecipientInfo.setOnClickListener(this);
     }
 
     private void getOrder() {
@@ -166,6 +174,23 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
                 }
             }
         });
+    }
+
+    private void setFabButton() {
+        if (TextUtils.isEmpty(goodsName.getText()) || TextUtils.isEmpty(reward.getText()) || (isGoodsSpecific.isChecked() && TextUtils.isEmpty(goodsDetail.getText())) ||
+                (isAddressSpecific.isChecked() && TextUtils.isEmpty(purchasingAddressText.getText()))) {
+            if (confirm.getVisibility() == View.VISIBLE) {
+                Animation animationDown = AnimationUtils.loadAnimation(this, R.anim.scale_down);
+                confirm.startAnimation(animationDown);
+                confirm.setVisibility(View.GONE);
+            }
+        } else if ((!isGoodsSpecific.isChecked() || !TextUtils.isEmpty(goodsDetail.getText())) || !isAddressSpecific.isChecked() || !TextUtils.isEmpty(purchasingAddressText.getText())) {
+            if (confirm.getVisibility() == View.GONE) {
+                Animation animationUp = AnimationUtils.loadAnimation(this, R.anim.scale_up);
+                confirm.startAnimation(animationUp);
+                confirm.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override
@@ -196,6 +221,7 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
                 openAlbum();
                 break;
             case R.id.purchasing_address_text:
+            case R.id.choose_purchasing_address:
                 Intent intentToChooseLocale = new Intent(this, ChooseLocaleActivity.class);
                 String address = purchasingAddressText.getText().toString();
                 if (!TextUtils.isEmpty(address)) {
@@ -204,7 +230,9 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
                 startActivityForResult(intentToChooseLocale, CHOOSE_LOCALE);
                 break;
             case R.id.recipient_info_text:
-//                Intent intentToShipperInfo = new Intent(this, );
+            case R.id.choose_recipient_info:
+                Intent intentToRecipientInfo = new Intent(this, RecipientInfoActivity.class);
+                startActivityForResult(intentToRecipientInfo, CHOOSE_RECIPIENT_INFO);
                 break;
         }
     }
@@ -216,19 +244,7 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (TextUtils.isEmpty(goodsName.getText()) || TextUtils.isEmpty(goodsDetail.getText()) || TextUtils.isEmpty(reward.getText()) || TextUtils.isEmpty(purchasingAddressText.getText())) {
-            if (confirm.getVisibility() == View.VISIBLE) {
-                Animation animationDown = AnimationUtils.loadAnimation(this, R.anim.scale_down);
-                confirm.startAnimation(animationDown);
-                confirm.setVisibility(View.GONE);
-            }
-        } else {
-            if (confirm.getVisibility() == View.GONE) {
-                Animation animationUp = AnimationUtils.loadAnimation(this, R.anim.scale_up);
-                confirm.startAnimation(animationUp);
-                confirm.setVisibility(View.VISIBLE);
-            }
-        }
+        setFabButton();
     }
 
     @Override
@@ -258,6 +274,7 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
                 }
                 break;
             case CHOOSE_LOCALE:
+                setFabButton();
                 if (resultCode == RESULT_OK) {
                     if (data.hasExtra("address")) {
                         String address = data.getStringExtra("address");
@@ -266,14 +283,16 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
                     }
                 }
                 break;
-            case CHOOSE_SHIPPER_INFO:
+            case CHOOSE_RECIPIENT_INFO:
+                setFabButton();
                 if (resultCode == RESULT_OK) {
-                    if (data.hasExtra("name") && data.hasExtra("phone") && data.hasExtra("address")) {
-                        String name = data.getStringExtra("name");
+                    if (data.hasExtra("recipient_info")) {
+                        recipientInfo = data.getParcelableExtra("recipient_info");
+                        String name = recipientInfo.getName();
                         order.setShipperName(name);
-                        String phone = data.getStringExtra("phone");
+                        String phone = recipientInfo.getPhone();
                         order.setShipperPhone(phone);
-                        String address = data.getStringExtra("address");
+                        String address = recipientInfo.getAddress();
                         order.setShippingAddress(address);
                         recipientInfoText.setText("收货人： " + name + "\n联系方式： " + phone + "\n收货地址： " + address);
                     }
