@@ -142,7 +142,7 @@ public class MyProfileActivity extends BaseActivity<ActivityMyProfileBinding> {
         } else {
             tvIdCardVerify.setText("未认证");
         }
-        if (user.getAliPayVerify()) {
+        if (user.getAlipayVerify()) {
             tvAliPayVerify.setText("已认证");
         } else {
             tvAliPayVerify.setText("未认证");

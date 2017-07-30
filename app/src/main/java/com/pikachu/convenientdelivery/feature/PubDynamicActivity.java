@@ -76,6 +76,7 @@ public class PubDynamicActivity extends BaseActivity<ActivityPubDynamicBinding> 
 
     private void initViews() {
         toolbar = bindingView.tbPubCircle;
+        toolbar.setNavigationIcon(R.drawable.nav_close);
         etContent = bindingView.etContent;
         ivPhoto = bindingView.ivPhoto;
         nineGridView = bindingView.nineGridView;

@@ -29,7 +29,7 @@ import com.pikachu.convenientdelivery.databinding.ActivityCityPickerBinding;
 import com.pikachu.convenientdelivery.databinding.CpViewNoSearchResultBinding;
 import com.pikachu.convenientdelivery.db.DBManager;
 import com.pikachu.convenientdelivery.model.City;
-import com.pikachu.convenientdelivery.model.LocateState;
+import com.pikachu.convenientdelivery.util.LocateState;
 import com.pikachu.convenientdelivery.util.StringUtils;
 import com.pikachu.convenientdelivery.util.Utility;
 import com.pikachu.convenientdelivery.view.SideLetterBar;
@@ -62,7 +62,6 @@ public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> 
         super.onCreate(savedInstanceState);
 
 
-        setTitle("选择城市");
         initData();
         initView();
 //        initLocation();
@@ -112,6 +111,7 @@ public class CityPickerActivity extends BaseActivity<ActivityCityPickerBinding> 
         rootView = bindingView.rootView;
         toolbar = bindingView.toolbar;
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("选择城市");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.nav_close);
         searchView = bindingView.searchView;

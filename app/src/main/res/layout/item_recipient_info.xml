@@ -4,11 +4,9 @@
 
     <data>
 
-        <import type="com.pikachu.convenientdelivery.model.RecipientInfo" />
-
         <variable
-            name="data"
-            type="RecipientInfo" />
+            name="user"
+            type="com.pikachu.convenientdelivery.model.User" />
 
     </data>
 
@@ -36,11 +34,11 @@
                     android:layout_margin="10dp">
 
                     <TextView
-                        android:id="@+id/name"
+                        android:id="@+id/nick"
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
                         android:layout_gravity="start"
-                        android:text="@{data.name}"
+                        android:text="@{user.nick}"
                         android:textSize="14sp"
                         android:gravity="start" />
 
@@ -49,7 +47,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
                         android:layout_gravity="end"
-                        android:text="@{data.phone}"
+                        android:text="@{user.phone}"
                         android:textSize="14sp"
                         android:gravity="end" />
 
@@ -60,7 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_margin="10dp"
-                    android:text="@{data.address}"
+                    android:text="@{user.address}"
                     android:textSize="14sp" />
 
             </LinearLayout>

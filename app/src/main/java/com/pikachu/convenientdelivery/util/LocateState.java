@@ -1,4 +1,4 @@
-package com.pikachu.convenientdelivery.model;
+package com.pikachu.convenientdelivery.util;
 
 /**
  * LocateState

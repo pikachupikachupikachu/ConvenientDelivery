@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.model.City;
-import com.pikachu.convenientdelivery.model.LocateState;
+import com.pikachu.convenientdelivery.util.LocateState;
 import com.pikachu.convenientdelivery.util.PinyinUtils;
 import com.pikachu.convenientdelivery.view.WrapHeightGridView;
 

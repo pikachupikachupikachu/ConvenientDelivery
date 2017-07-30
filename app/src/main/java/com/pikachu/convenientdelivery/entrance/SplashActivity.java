@@ -34,7 +34,8 @@ public class SplashActivity extends BaseActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (BmobUser.getCurrentUser(User.class) == null) {
+                User user = BmobUser.getCurrentUser(User.class);
+                if (user == null) {
                     jumpTo(LoginActivity.class, true);
                 } else {
                     jumpTo(HomeActivity.class, true);

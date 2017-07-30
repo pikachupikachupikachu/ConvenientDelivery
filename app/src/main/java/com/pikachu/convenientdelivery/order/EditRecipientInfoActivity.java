@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.BaseActivity;
 import com.pikachu.convenientdelivery.databinding.ActivityEditRecipientInfoBinding;
-import com.pikachu.convenientdelivery.model.RecipientInfo;
+import com.pikachu.convenientdelivery.model.User;
 
 /**
  * 编辑收货地址
@@ -22,7 +22,7 @@ import com.pikachu.convenientdelivery.model.RecipientInfo;
 public class EditRecipientInfoActivity extends BaseActivity<ActivityEditRecipientInfoBinding> {
 
     private Toolbar toolbar;
-    private EditText name;
+    private EditText nick;
     private EditText phone;
     private EditText address;
 
@@ -46,12 +46,12 @@ public class EditRecipientInfoActivity extends BaseActivity<ActivityEditRecipien
                 onBackPressed();
                 return true;
             case R.id.action_done:
-                String nameText = name.getText().toString();
+                String nickText = nick.getText().toString();
                 String phoneText = phone.getText().toString();
                 String addressText = address.getText().toString();
-                if (TextUtils.isEmpty(nameText) || nameText.length() < 2) {
+                if (TextUtils.isEmpty(nickText) || nickText.length() < 2) {
                     Toast.makeText(this, "收货人姓名至少2个字符", Toast.LENGTH_SHORT).show();
-                } else if (nameText.length() > 15) {
+                } else if (nickText.length() > 15) {
                     Toast.makeText(this, "收货人姓名至多15个字符", Toast.LENGTH_SHORT).show();
                 } else {
                     if (TextUtils.isEmpty(phoneText)) {
@@ -64,8 +64,8 @@ public class EditRecipientInfoActivity extends BaseActivity<ActivityEditRecipien
                         } else if (addressText.length() > 60) {
                             Toast.makeText(this, "详细地址描述信息不得多于60个字符", Toast.LENGTH_SHORT).show();
                         } else {
-                            RecipientInfo recipientInfo = new RecipientInfo();
-                            recipientInfo.setName(name.getText().toString());
+                            User recipientInfo = new User();
+                            recipientInfo.setNick(nick.getText().toString());
                             recipientInfo.setPhone(phone.getText().toString());
                             recipientInfo.setAddress(address.getText().toString());
                             //上传Bomb
@@ -99,7 +99,7 @@ public class EditRecipientInfoActivity extends BaseActivity<ActivityEditRecipien
         toolbar = bindingView.toolbar;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        name = bindingView.name;
+        nick = bindingView.nick;
         phone = bindingView.phone;
         address = bindingView.address;
     }
@@ -107,10 +107,10 @@ public class EditRecipientInfoActivity extends BaseActivity<ActivityEditRecipien
     private void initData() {
         Intent intent = getIntent();
         if (intent.hasExtra("recipient_info")) {
-            RecipientInfo recipientInfo = intent.getParcelableExtra("recipient_info");
-            name.setText(recipientInfo.getName());
-            phone.setText(recipientInfo.getPhone());
-            address.setText(recipientInfo.getAddress());
+            User user = intent.getParcelableExtra("recipient_info");
+            nick.setText(user.getNick());
+            phone.setText(user.getPhone());
+            address.setText(user.getAddress());
             getSupportActionBar().setTitle("编辑地址");
         } else {
             getSupportActionBar().setTitle("添加新地址");

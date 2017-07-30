@@ -8,13 +8,13 @@ import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.adapter.BaseRecyclerViewAdapter;
 import com.pikachu.convenientdelivery.base.adapter.BaseRecyclerViewHolder;
 import com.pikachu.convenientdelivery.databinding.ItemRecipientInfoBinding;
-import com.pikachu.convenientdelivery.model.RecipientInfo;
+import com.pikachu.convenientdelivery.model.User;
 
 /**
  * RecipientInfoAdapter
  */
 
-public class RecipientInfoAdapter extends BaseRecyclerViewAdapter<RecipientInfo> {
+public class RecipientInfoAdapter extends BaseRecyclerViewAdapter<User> {
 
     private Context context;
 
@@ -26,21 +26,21 @@ public class RecipientInfoAdapter extends BaseRecyclerViewAdapter<RecipientInfo>
         return new ViewHolder(parent, R.layout.item_recipient_info);
     }
 
-    private class ViewHolder extends BaseRecyclerViewHolder<RecipientInfo, ItemRecipientInfoBinding> {
+    private class ViewHolder extends BaseRecyclerViewHolder<User, ItemRecipientInfoBinding> {
 
         ViewHolder(ViewGroup parent, int layout) {
             super(parent, layout);
         }
 
         @Override
-        public void onBindViewHolder(final RecipientInfo recipientInfo, final int position) {
-            if (recipientInfo != null) {
-                binding.setData(recipientInfo);
+        public void onBindViewHolder(final User user, final int position) {
+            if (user != null) {
+                binding.setUser(user);
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (listener != null) {
-                            listener.onClick(v, recipientInfo, position);
+                            listener.onClick(v, user, position);
                         }
                     }
                 });

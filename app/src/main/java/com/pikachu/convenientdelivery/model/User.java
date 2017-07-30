@@ -1,5 +1,9 @@
 package com.pikachu.convenientdelivery.model;
 
+import android.databinding.ObservableField;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 
@@ -7,108 +11,153 @@ import cn.bmob.v3.datatype.BmobFile;
  * Created by 83624 on 2017/7/16.
  */
 
-public class User extends BmobUser {
-    private String nick;
-    private BmobFile avatar;
-    private String city;
-    private String address;
-    private String intro;
+public class User extends BmobUser implements Parcelable {
 
-    private Boolean isIdCardVerify = false;
-    private Boolean isAliPayVerify = false;
-    private Boolean isSesameVerify = false;
+    private final ObservableField<String> nick = new ObservableField<>();
+    private final ObservableField<String> phone = new ObservableField<>();
+    private final ObservableField<BmobFile> avatar = new ObservableField<>();
+    private final ObservableField<String> city = new ObservableField<>();
+    private final ObservableField<String> address = new ObservableField<>();
+    private final ObservableField<String> intro = new ObservableField<>();
 
-
+    private final ObservableField<Boolean> isIdCardVerify = new ObservableField<>(false);
+    private final ObservableField<Boolean> isAlipayVerify = new ObservableField<>(false);
+    private final ObservableField<Boolean> isSesameVerify = new ObservableField<>(false);
 
     public User(){}
 
-
-    public User(String nick, BmobFile avatar, String city, String address, String intro, Boolean isIdCardVerify, Boolean isAliPayVerify, Boolean isSesameVerify) {
-        this.nick = nick;
-        this.avatar = avatar;
-        this.city = city;
-        this.address = address;
-        this.intro = intro;
-        this.isIdCardVerify = isIdCardVerify;
-        this.isAliPayVerify = isAliPayVerify;
-        this.isSesameVerify = isSesameVerify;
+    public User(String nick, String phone, BmobFile avatar, String city, String address, String intro, boolean isIdCardVerify, boolean isAlipayVerify, boolean isSesameVerify) {
+        this.nick.set(nick);
+        this.phone.set(phone);
+        this.avatar.set(avatar);
+        this.city.set(city);
+        this.address.set(address);
+        this.intro.set(intro);
+        this.isIdCardVerify.set(isIdCardVerify);
+        this.isAlipayVerify.set(isAlipayVerify);
+        this.isSesameVerify.set(isSesameVerify);
     }
 
     public String getNick() {
-        return nick;
+        return nick.get();
     }
 
     public void setNick(String nick) {
-        this.nick = nick;
+        this.nick.set(nick);
     }
 
-    public BmobFile getAvatar() {
-        return avatar;
+    public String getPhone() {
+        return phone.get();
     }
 
-    public void setAvatar(BmobFile avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getIntro() {
-        return intro;
-    }
-
-    public void setIntro(String intro) {
-        this.intro = intro;
-    }
-
-    public Boolean getIdCardVerify() {
-        return isIdCardVerify;
-    }
-
-    public void setIdCardVerify(Boolean idCardVerify) {
-        isIdCardVerify = idCardVerify;
-    }
-
-    public Boolean getAliPayVerify() {
-        return isAliPayVerify;
-    }
-
-    public void setAliPayVerify(Boolean aliPayVerify) {
-        isAliPayVerify = aliPayVerify;
-    }
-
-    public Boolean getSesameVerify() {
-        return isSesameVerify;
-    }
-
-    public void setSesameVerify(Boolean sesameVerify) {
-        isSesameVerify = sesameVerify;
+    public void setPhone(String phone) {
+        this.phone.set(phone);
     }
 
     @Override
-    public String toString() {
-        return "User{" +
-                "nick='" + nick + '\'' +
-                ", avatar=" + avatar +
-                ", city='" + city + '\'' +
-                ", address='" + address + '\'' +
-                ", intro='" + intro + '\'' +
-                ", isIdCardVerify=" + isIdCardVerify +
-                ", isAliPayVerify=" + isAliPayVerify +
-                ", isSesameVerify=" + isSesameVerify +
-                '}';
+    public String getMobilePhoneNumber() {
+        return getPhone();
     }
+
+    @Override
+    public void setMobilePhoneNumber(String mobilePhoneNumber) {
+        setPhone(mobilePhoneNumber);
+    }
+
+    public BmobFile getAvatar() {
+        return avatar.get();
+    }
+
+    public void setAvatar(BmobFile avatar) {
+        this.avatar.set(avatar);
+    }
+
+    public String getCity() {
+        return city.get();
+    }
+
+    public void setCity(String city) {
+        this.city.set(city);
+    }
+
+    public String getAddress() {
+        return address.get();
+    }
+
+    public void setAddress(String address) {
+        this.address.set(address);
+    }
+
+    public String getIntro() {
+        return intro.get();
+    }
+
+    public void setIntro(String intro) {
+        this.intro.set(intro);
+    }
+
+    public Boolean getIdCardVerify() {
+        return isIdCardVerify.get();
+    }
+
+    public void setIdCardVerify(Boolean idCardVerify) {
+        this.isIdCardVerify.set(idCardVerify);
+    }
+
+    public Boolean getAlipayVerify() {
+        return isAlipayVerify.get();
+    }
+
+    public void setAlipayVerify(Boolean alipayVerify) {
+        this.isAlipayVerify.set(alipayVerify);
+    }
+
+    public Boolean getSesameVerify() {
+        return isSesameVerify.get();
+    }
+
+    public void setSesameVerify(Boolean sesameVerify) {
+        this.isSesameVerify.set(sesameVerify);
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(getNick());
+        dest.writeString(getPhone());
+        dest.writeSerializable(getAvatar());
+        dest.writeString(getCity());
+        dest.writeString(getAddress());
+        dest.writeString(getIntro());
+        dest.writeByte((byte) (getIdCardVerify() ? 1 : 0));
+        dest.writeByte((byte) (getAlipayVerify() ? 1 : 0));
+        dest.writeByte((byte) (getSesameVerify() ? 1 : 0));
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            User user = new User();
+            user.setNick(source.readString());
+            user.setPhone(source.readString());
+            user.setAvatar((BmobFile) source.readSerializable());
+            user.setCity(source.readString());
+            user.setAddress(source.readString());
+            user.setIntro(source.readString());
+            user.setIdCardVerify(source.readByte() != 0);
+            user.setAlipayVerify(source.readByte() != 0);
+            user.setSesameVerify(source.readByte() != 0);
+            return user;
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

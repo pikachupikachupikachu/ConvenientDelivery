@@ -2,6 +2,7 @@ package com.pikachu.convenientdelivery.order;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +15,7 @@ import com.pikachu.convenientdelivery.adapter.RecipientInfoAdapter;
 import com.pikachu.convenientdelivery.base.BaseActivity;
 import com.pikachu.convenientdelivery.base.adapter.BaseRecyclerViewAdapter;
 import com.pikachu.convenientdelivery.databinding.ActivityRecipientInfoBinding;
-import com.pikachu.convenientdelivery.model.RecipientInfo;
+import com.pikachu.convenientdelivery.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.List;
  * 收货地址
  */
 
-public class RecipientInfoActivity extends BaseActivity<ActivityRecipientInfoBinding> implements View.OnClickListener, BaseRecyclerViewAdapter.OnItemClickListener<RecipientInfo> {
+public class RecipientInfoActivity extends BaseActivity<ActivityRecipientInfoBinding> implements View.OnClickListener, BaseRecyclerViewAdapter.OnItemClickListener<User> {
 
     private Toolbar toolbar;
     private FloatingActionButton add;
@@ -31,7 +32,7 @@ public class RecipientInfoActivity extends BaseActivity<ActivityRecipientInfoBin
 
     private RecipientInfoAdapter adapter;
 
-    private List<RecipientInfo> recipientInfoList = new ArrayList<>();
+    private List<User> recipientInfoList = new ArrayList<>();
 
     public static final int EDIT_RECIPIENT_INFO = 1;
 
@@ -96,17 +97,17 @@ public class RecipientInfoActivity extends BaseActivity<ActivityRecipientInfoBin
     }
 
     @Override
-    public void onClick(View view, RecipientInfo recipientInfo, int position) {
+    public void onClick(View view, User user, int position) {
         switch (view.getId()) {
             case R.id.item_recipient:
                 Intent intent = new Intent();
-                intent.putExtra("recipient_info", recipientInfo);
+                intent.putExtra("recipient_info", (Parcelable) user);
                 setResult(RESULT_OK, intent);
                 finish();
                 break;
             case R.id.edit:
                 Intent intentToEditRecipientInfo = new Intent(this, EditRecipientInfoActivity.class);
-                intentToEditRecipientInfo.putExtra("recipient", recipientInfo);
+                intentToEditRecipientInfo.putExtra("recipient", (Parcelable) user);
                 startActivityForResult(intentToEditRecipientInfo, EDIT_RECIPIENT_INFO);
                 break;
             case R.id.delete:

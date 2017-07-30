@@ -10,13 +10,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pikachu.convenientdelivery.R;
@@ -35,27 +32,13 @@ import c.b.PListener;
  *
  */
 
-public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBinding> implements View.OnClickListener  {
+public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBinding> implements View.OnClickListener {
 
     private Toolbar toolbar;
-    private Button publish;
-    private Button cancel;
+    private Button confirm;
+    private ProgressDialog dialog;
 
-    private TextView requirement;
-    private TextView message;
-    private TextView goods;
-    private TextView locale;
-    private TextView pay;
-    private TextView orderID;
-    private TextView tv;
-    private TextView percent;
-    private ImageView picture;
-    private CardView addressView;
-    private boolean priceway;
-    
-    ProgressDialog dialog;
-
-    Order order = new Order();
+    private Order order;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,20 +46,7 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         BP.init("560ac477463924eba4cfca3a00353215");
         initView();
-        MyOrder();
-    }
-
-    private void MyOrder() {
-        Intent intent = getIntent();
-        order = (Order) intent.getSerializableExtra("order");
-        requirement.setText(order.getGoodsName());
-        message.setText(order.getGoodsDetail());
-//        goods.setText(order.getGoods());
-//        locale.setText(order.getLocale());
-//        pay.setText(order.getPay());
-//        Bitmap bitmap = BitmapFactory.decodeFile(order.getImagePath());
-//        picture.setImageBitmap(bitmap);
-//        priceway = order.getPriceway();
+        initData();
     }
 
     @Override
@@ -88,28 +58,14 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
         toolbar = bindingView.toolbar;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        publish = bindingView.publish;
-        cancel = bindingView.cancel;
-        requirement = bindingView.requirement;
-        message = bindingView.message;
-        goods = bindingView.goods;
-        locale = bindingView.locale;
-        pay = bindingView.pay;
-        orderID = bindingView.orderID;
-        tv = bindingView.tv;
-        picture = bindingView.picture;
-        percent = bindingView.percent;
-        addressView = bindingView.addressView;
+        confirm = bindingView.confirm;
+        confirm.setOnClickListener(this);
+    }
 
-        publish.setOnClickListener(this);
-        cancel.setOnClickListener(this);
-        addressView.setOnClickListener(this);
-        if (priceway) {
-            percent.setVisibility(View.GONE);
-        } else {
-            percent.setVisibility(View.VISIBLE);
-        }
-
+    private void initData() {
+        Intent intent = getIntent();
+        order = intent.getParcelableExtra("recipient_info");
+        bindingView.setOrder(order);
     }
 
     @Override
@@ -132,17 +88,11 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.publish :
+            case R.id.confirm:
                 payOrder();
-                break;
-            case R.id.addressView:
-                break;
-            case R.id.cancel:
-                onBackPressed();
                 break;
         }
     }
-
 
     //pay 方法
     private void payOrder() {
@@ -165,7 +115,6 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
             public void unknow() {
                 Toast.makeText(OrderConfirmActivity.this, "支付结果未知,请稍后手动查询", Toast.LENGTH_SHORT)
                         .show();
-                tv.append(order.getGoodsName() + "'s pay status is unknow\n\n");
                 hideDialog();
             }
 
@@ -173,17 +122,12 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
             @Override
             public void succeed() {
                 Toast.makeText(OrderConfirmActivity.this, "支付成功!", Toast.LENGTH_SHORT).show();
-                tv.append(order.getGoodsName() + "'s pay status is success\n\n");
                 hideDialog();
             }
 
             // 无论成功与否,返回订单号
             @Override
             public void orderId(String orderId) {
-                // 此处应该保存订单号,比如保存进数据库等,以便以后查询
-                orderID.setText(orderId);
-                tv.append(order.getGoodsName() + "'s orderid is " + orderId + "\n\n");
-                showDialog("获取订单成功!请等待跳转到支付页面~");
             }
 
             // 支付失败,原因可能是用户中断支付操作,也可能是网络原因
@@ -203,8 +147,6 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
                     Toast.makeText(OrderConfirmActivity.this, "支付中断!", Toast.LENGTH_SHORT)
                             .show();
                 }
-                tv.append(order.getGoodsName() + "'s pay status is fail, error code is \n"
-                       + code + " ,reason is " + reason + "\n\n");
                 hideDialog();
             }
         });
@@ -237,7 +179,7 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
         }
     }
 
-     void installBmobPayPlugin(String fileName) {
+    void installBmobPayPlugin(String fileName) {
         try {
             InputStream is = getAssets().open(fileName);
             File file = new File(Environment.getExternalStorageDirectory()

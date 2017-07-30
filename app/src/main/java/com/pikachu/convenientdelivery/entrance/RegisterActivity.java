@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.pikachu.convenientdelivery.R;
@@ -86,7 +87,7 @@ public class RegisterActivity extends BaseActivity<ActivityRegisterBinding> {
             user.setNick(nick);
             user.setPassword(pwd);
             user.setUsername(phone);
-            user.setMobilePhoneNumber(phone);
+            user.setPhone(phone);
             verifySmsCode();
         }
     }
@@ -117,6 +118,9 @@ public class RegisterActivity extends BaseActivity<ActivityRegisterBinding> {
                             } else {
                                 if (e.getErrorCode() == 202) {
                                     showToast("该手机号已经注册");
+                                } else {
+                                    showToast("错误代码" + e.getErrorCode());
+                                    Log.e("errorCode", "" + e.getErrorCode());
                                 }
 
                                 progress.dismiss();

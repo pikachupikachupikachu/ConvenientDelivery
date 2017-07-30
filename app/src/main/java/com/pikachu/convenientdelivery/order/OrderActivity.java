@@ -37,7 +37,7 @@ import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.BaseActivity;
 import com.pikachu.convenientdelivery.databinding.ActivityOrderBinding;
 import com.pikachu.convenientdelivery.model.Order;
-import com.pikachu.convenientdelivery.model.RecipientInfo;
+import com.pikachu.convenientdelivery.model.User;
 
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.exception.BmobException;
@@ -64,7 +64,7 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
     private ImageButton choosingRecipientInfo;
 
     private Order order = new Order();
-    private RecipientInfo recipientInfo;
+    private User recipientInfo;
 
     public static final int CHOOSE_PHOTO = 1;
     public static final int CHOOSE_LOCALE = 2;
@@ -288,13 +288,8 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
                 if (resultCode == RESULT_OK) {
                     if (data.hasExtra("recipient_info")) {
                         recipientInfo = data.getParcelableExtra("recipient_info");
-                        String name = recipientInfo.getName();
-                        order.setShipperName(name);
-                        String phone = recipientInfo.getPhone();
-                        order.setShipperPhone(phone);
-                        String address = recipientInfo.getAddress();
-                        order.setShippingAddress(address);
-                        recipientInfoText.setText("收货人： " + name + "\n联系方式： " + phone + "\n收货地址： " + address);
+                        order.setShipper(recipientInfo);
+                        recipientInfoText.setText("收货人： " + recipientInfo.getNick() + "\n联系方式： " + recipientInfo.getPhone() + "\n收货地址： " + recipientInfo.getAddress());
                     }
                 }
                 break;
@@ -345,10 +340,9 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
             }
             cursor.close();
         }
-        order.setGoodsImagePath(path);
+//        order.setGoodsImagePath(path);
         return path;
     }
-
 
     private void displayImage(String imagePath) {
         if (imagePath != null) {
