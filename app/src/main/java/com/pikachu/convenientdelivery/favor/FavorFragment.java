@@ -35,7 +35,7 @@ import static android.content.Context.SEARCH_SERVICE;
  * 帮忙
  */
 
-public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements View.OnClickListener, SearchView.OnQueryTextListener {
+public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements View.OnClickListener, SearchView.OnQueryTextListener, ViewPager.OnPageChangeListener {
 
     public static final String ARGUMENT = "argument";
 
@@ -78,6 +78,7 @@ public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements
         toolbarPickCityBinding.pickCity.setOnClickListener(this);
         tabFavor = bindingView.tabFavor;
         vpFavor = bindingView.vpFavor;
+        vpFavor.addOnPageChangeListener(this);
         fragmentList.clear();
         fragmentList.add(new TotalFragment());
         fragmentList.add(new SpecificObjectFragment());
@@ -134,5 +135,19 @@ public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements
     @Override
     public boolean onQueryTextChange(String newText) {
         return false;
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

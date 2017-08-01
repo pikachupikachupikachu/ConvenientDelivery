@@ -2,16 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <import type="android.view.View" />
-
-        <variable
-            name="order"
-            type="com.pikachu.convenientdelivery.model.Order" />
-
-    </data>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -40,51 +30,41 @@
                 app:cardElevation="2dp">
 
                 <LinearLayout
+                    android:id="@+id/item_recipient"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/item_recipient"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp">
-
-                            <TextView
-                                android:id="@+id/nick"
-                                android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_gravity="start"
-
-                                android:textSize="14sp"
-                                android:gravity="start" />
-
-                            <TextView
-                                android:id="@+id/phone"
-                                android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_gravity="end"
-                                android:text="@{order.recipient.phone}"
-                                android:textSize="14sp"
-                                android:gravity="end" />
-
-                        </LinearLayout>
+                        android:layout_margin="10dp">
 
                         <TextView
-                            android:id="@+id/address"
-                            android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_margin="10dp"
-                            android:text="@{order.recipient.address}"
+                            android:id="@+id/name"
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
+                            android:layout_weight="1"
                             android:textSize="14sp"
-                            android:gravity="start"/>
+                            android:gravity="start" />
+
+                        <TextView
+                            android:id="@+id/phone"
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
+                            android:layout_weight="1"
+                            android:textSize="14sp"
+                            android:gravity="end" />
 
                     </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/address"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_margin="10dp"
+                        android:textSize="14sp"
+                        android:gravity="start"/>
 
                 </LinearLayout>
 
@@ -122,7 +102,6 @@
                             android:layout_marginLeft="10dp"
                             android:layout_marginStart="10dp"
                             android:layout_weight="1"
-                            android:text="@{order.goodsName}"
                             android:textSize="14sp"
                             android:gravity="center_vertical"/>
 
@@ -137,16 +116,15 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="20dp"
                             android:layout_gravity="start"
-                            android:gravity="center_vertical"
                             android:text="备注："
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:gravity="center_vertical" />
 
                         <TextView
                             android:id="@+id/goods_detail"
@@ -156,9 +134,8 @@
                             android:layout_marginLeft="10dp"
                             android:layout_marginStart="10dp"
                             android:layout_weight="1"
-                            android:text="@{order.goodsDetail}"
                             android:textSize="14sp"
-                            android:gravity="center_vertical" />
+                            android:gravity="start" />
 
                     </LinearLayout>
 
@@ -187,7 +164,6 @@
                             android:layout_height="20dp"
                             android:layout_gravity="end"
                             android:layout_weight="1"
-                            android:text="@{order.purchasingAddress}"
                             android:textSize="14sp"
                             android:gravity="start"/>
 
@@ -216,8 +192,8 @@
                             android:id="@+id/reward"
                             android:layout_width="0dp"
                             android:layout_height="20dp"
+                            android:layout_weight="1"
                             android:layout_gravity="end"
-                            android:text="@{`` + order.reward}"
                             android:textSize="14sp"
                             android:gravity="center_vertical" />
 
@@ -229,6 +205,30 @@
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:background="@color/darkGrey" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:layout_gravity="start"
+                            android:text="截止时间 ："
+                            android:textSize="14sp"
+                            android:gravity="center_vertical" />
+
+                        <TextView
+                            android:id="@+id/deadline"
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
+                            android:layout_weight="1"
+                            android:layout_gravity="end"
+                            android:textSize="14sp"
+                            android:gravity="center_vertical" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -250,6 +250,8 @@
                         android:layout_height="20dp"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginEnd="5dp"
                         android:text="支付方式 ："
                         android:textSize="14sp"
                         android:gravity="center_vertical" />
@@ -320,7 +322,7 @@
                 android:layout_marginRight="10dp"
                 android:background="@drawable/button_circle"
                 android:text="支付订单"
-                android:textColor="@android:color/black"
+                android:textColor="@color/gray_deep"
                 android:textSize="14sp" />
 
         </LinearLayout>

@@ -8,12 +8,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.BaseActivity;
 import com.pikachu.convenientdelivery.databinding.ActivityEditRecipientInfoBinding;
+import com.pikachu.convenientdelivery.model.RecipientInfo;
 import com.pikachu.convenientdelivery.model.User;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * 编辑收货地址
@@ -22,9 +29,14 @@ import com.pikachu.convenientdelivery.model.User;
 public class EditRecipientInfoActivity extends BaseActivity<ActivityEditRecipientInfoBinding> {
 
     private Toolbar toolbar;
-    private EditText nick;
+    private EditText name;
     private EditText phone;
     private EditText address;
+
+    private RecipientInfo recipientInfo;
+
+    private boolean isEdit = false;
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,33 +58,55 @@ public class EditRecipientInfoActivity extends BaseActivity<ActivityEditRecipien
                 onBackPressed();
                 return true;
             case R.id.action_done:
-                String nickText = nick.getText().toString();
+                String nickText = name.getText().toString();
                 String phoneText = phone.getText().toString();
                 String addressText = address.getText().toString();
                 if (TextUtils.isEmpty(nickText) || nickText.length() < 2) {
-                    Toast.makeText(this, "收货人姓名至少2个字符", Toast.LENGTH_SHORT).show();
+                    showToast("收货人姓名至少2个字符");
                 } else if (nickText.length() > 15) {
-                    Toast.makeText(this, "收货人姓名至多15个字符", Toast.LENGTH_SHORT).show();
+                    showToast("收货人姓名至多15个字符");
+                } else if (TextUtils.isEmpty(phoneText)) {
+                    showToast("请填写联系电话");
                 } else {
-                    if (TextUtils.isEmpty(phoneText)) {
-                        Toast.makeText(this, "请填写联系电话", Toast.LENGTH_SHORT).show();
+                    String regExp = "^((13[0-9])|(15[^4])|(18[0,1,2,3,5-9])|(17[0-8])|(147))\\d{8}$";
+                    Pattern p = Pattern.compile(regExp);
+                    Matcher m = p.matcher(phoneText);
+                    if (!m.find()) {
+                        showToast("请填写正确的联系电话");
+                    } else if (TextUtils.isEmpty(addressText)) {
+                        showToast("请填写详细地址");
+                    } else if (addressText.length() < 5) {
+                        showToast("详细地址描述信息不得少于5个字符");
+                    } else if (addressText.length() > 60) {
+                        showToast("详细地址描述信息不得多于60个字符");
                     } else {
-                        if (TextUtils.isEmpty(addressText)) {
-                            Toast.makeText(this, "请填写详细地址", Toast.LENGTH_SHORT).show();
-                        } else if (addressText.length() < 5) {
-                            Toast.makeText(this, "详细地址描述信息不得少于5个字符", Toast.LENGTH_SHORT).show();
-                        } else if (addressText.length() > 60) {
-                            Toast.makeText(this, "详细地址描述信息不得多于60个字符", Toast.LENGTH_SHORT).show();
-                        } else {
-                            User recipientInfo = new User();
-                            recipientInfo.setNick(nick.getText().toString());
-                            recipientInfo.setPhone(phone.getText().toString());
-                            recipientInfo.setAddress(address.getText().toString());
-                            //上传Bomb
-                            Intent intent = new Intent();
-                            setResult(RESULT_OK, intent);
-                            finish();
+                        if (recipientInfo == null) {
+                            recipientInfo = new RecipientInfo();
                         }
+                        recipientInfo.setName(name.getText().toString());
+                        recipientInfo.setPhone(phone.getText().toString());
+                        recipientInfo.setAddress(address.getText().toString());
+                        final User user = BmobUser.getCurrentUser(User.class);
+                        if (isEdit) {
+                            user.setRecipientInfo(position, recipientInfo);
+                        } else {
+                            user.addRecipientInfo(recipientInfo);
+                        }
+                        user.update(new UpdateListener() {
+                            @Override
+                            public void done(BmobException e) {
+                                if (e == null) {
+                                    showToast("保存成功");
+                                    Intent intent = new Intent();
+                                    setResult(RESULT_OK, intent);
+                                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                                    finish();
+                                } else {
+                                    showToast("错误");
+                                }
+                            }
+                        });
+                        //上传Bomb
                     }
                 }
                 return true;
@@ -99,7 +133,7 @@ public class EditRecipientInfoActivity extends BaseActivity<ActivityEditRecipien
         toolbar = bindingView.toolbar;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        nick = bindingView.nick;
+        name = bindingView.name;
         phone = bindingView.phone;
         address = bindingView.address;
     }
@@ -107,10 +141,12 @@ public class EditRecipientInfoActivity extends BaseActivity<ActivityEditRecipien
     private void initData() {
         Intent intent = getIntent();
         if (intent.hasExtra("recipient_info")) {
-            User user = intent.getParcelableExtra("recipient_info");
-            nick.setText(user.getNick());
-            phone.setText(user.getPhone());
-            address.setText(user.getAddress());
+            isEdit = true;
+            recipientInfo = intent.getParcelableExtra("recipient_info");
+            position = intent.getIntExtra("position", 0);
+            name.setText(recipientInfo.getName());
+            phone.setText(recipientInfo.getPhone());
+            address.setText(recipientInfo.getAddress());
             getSupportActionBar().setTitle("编辑地址");
         } else {
             getSupportActionBar().setTitle("添加新地址");

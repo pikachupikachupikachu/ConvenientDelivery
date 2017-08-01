@@ -103,10 +103,35 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setOnNavigationItemReselectedListener(this);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (featureFragment == null) {
-            featureFragment = FeatureFragment.newInstance("Feature Fragment");
+        switch (bottomNavigationView.getSelectedItemId()) {
+            case R.id.feature:
+                if (featureFragment == null) {
+                    featureFragment = FeatureFragment.newInstance("Feature Fragment");
+                    transaction.replace(R.id.content, featureFragment);
+                }
+                break;
+            case R.id.favor:
+                if (favorFragment == null) {
+                    favorFragment = FavorFragment.newInstance("Favor Fragment");
+                    transaction.replace(R.id.content, favorFragment);
+                }
+                break;
+            case R.id.order:
+                OrderActivity.start(this);
+                break;
+            case R.id.chats:
+                if (chatsFragment == null) {
+                    chatsFragment = ChatsFragment.newInstance("Chat Fragment");
+                    transaction.replace(R.id.content, chatsFragment);
+                }
+                break;
+            case R.id.me:
+                if (meFragment == null) {
+                    meFragment = MeFragment.newInstance("Me Fragment");
+                    transaction.replace(R.id.content, meFragment);
+                }
+                break;
         }
-        transaction.replace(R.id.content, featureFragment);
         transaction.commit();
         final View rootView = bindingView.root;
         rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {

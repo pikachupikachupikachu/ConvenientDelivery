@@ -1,6 +1,8 @@
 package com.pikachu.convenientdelivery.order;
 
 import android.annotation.TargetApi;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -25,21 +27,28 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.BaseActivity;
 import com.pikachu.convenientdelivery.databinding.ActivityOrderBinding;
 import com.pikachu.convenientdelivery.model.Order;
+import com.pikachu.convenientdelivery.model.RecipientInfo;
 import com.pikachu.convenientdelivery.model.User;
 
+import java.util.Calendar;
+import java.util.Locale;
+
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 
@@ -51,10 +60,10 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
 
     private Toolbar toolbar;
     private FloatingActionButton confirm;
-    private EditText goodsName;
-    private EditText goodsDetail;
+    private EditText goodsNameText;
+    private EditText goodsDetailText;
     private ImageView goodsPhoto;
-    private EditText reward;
+    private EditText rewardText;
     private RadioGroup rewardSelect;
     private Switch isGoodsSpecific;
     private Switch isAddressSpecific;
@@ -62,9 +71,12 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
     private ImageButton choosingPurchasingAddress;
     private TextView recipientInfoText;
     private ImageButton choosingRecipientInfo;
+    private TextView deadlineText;
+    private ImageButton chooseDeadLine;
+    private TextView hint;
 
     private Order order = new Order();
-    private User recipientInfo;
+    private RecipientInfo recipientInfo;
 
     public static final int CHOOSE_PHOTO = 1;
     public static final int CHOOSE_LOCALE = 2;
@@ -128,14 +140,14 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         confirm = bindingView.fab;
         confirm.setOnClickListener(this);
-        goodsName = bindingView.goodsName;
-        goodsName.addTextChangedListener(this);
-        goodsDetail = bindingView.goodsDetail;
-        goodsDetail.addTextChangedListener(this);
+        goodsNameText = bindingView.goodsName;
+        goodsNameText.addTextChangedListener(this);
+        goodsDetailText = bindingView.goodsDetail;
+        goodsDetailText.addTextChangedListener(this);
         goodsPhoto = bindingView.goodsPhoto;
         goodsPhoto.setOnClickListener(this);
-        reward = bindingView.reward;
-        reward.addTextChangedListener(this);
+        rewardText = bindingView.reward;
+        rewardText.addTextChangedListener(this);
         rewardSelect = bindingView.rewardSelect;
         rewardSelect.setOnCheckedChangeListener(this);
         isGoodsSpecific = bindingView.isGoodsSpecific;
@@ -152,43 +164,31 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
         recipientInfoText.addTextChangedListener(this);
         choosingRecipientInfo = bindingView.chooseRecipientInfo;
         choosingRecipientInfo.setOnClickListener(this);
-    }
-
-    private void getOrder() {
-        order.setGoodsName(goodsName.getText().toString());
-        order.setGoodsDetail(goodsDetail.getText().toString());
-//        order.setGoodsImagePath();
-        if (order.isRewardDefault()) {
-            order.setReward(Double.parseDouble(reward.getText().toString()));
-        } else {
-            order.setReward(0.0);
-        }
-
-        order.save(new SaveListener<String>() {
-            @Override
-            public void done(String objectId, BmobException e) {
-                if (e == null) {
-                    Toast.makeText(OrderActivity.this, "添加数据成功，返回objectId为：" + objectId, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(OrderActivity.this, "创建数据失败" + e.getMessage() , Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+        deadlineText = bindingView.deadline;
+        deadlineText.setOnClickListener(this);
+        deadlineText.addTextChangedListener(this);
+        chooseDeadLine = bindingView.chooseDeadline;
+        chooseDeadLine.setOnClickListener(this);
+        hint = bindingView.hint;
+        hint.setOnClickListener(this);
     }
 
     private void setFabButton() {
-        if (TextUtils.isEmpty(goodsName.getText()) || TextUtils.isEmpty(reward.getText()) || (isGoodsSpecific.isChecked() && TextUtils.isEmpty(goodsDetail.getText())) ||
+        if (TextUtils.isEmpty(goodsNameText.getText()) || TextUtils.isEmpty(rewardText.getText()) || TextUtils.isEmpty(recipientInfoText.getText()) ||
+                TextUtils.isEmpty(deadlineText.getText()) || isGoodsSpecific.isChecked() && TextUtils.isEmpty(goodsDetailText.getText()) ||
                 (isAddressSpecific.isChecked() && TextUtils.isEmpty(purchasingAddressText.getText()))) {
             if (confirm.getVisibility() == View.VISIBLE) {
                 Animation animationDown = AnimationUtils.loadAnimation(this, R.anim.scale_down);
                 confirm.startAnimation(animationDown);
                 confirm.setVisibility(View.GONE);
+                hint.setVisibility(View.VISIBLE);
             }
-        } else if ((!isGoodsSpecific.isChecked() || !TextUtils.isEmpty(goodsDetail.getText())) || !isAddressSpecific.isChecked() || !TextUtils.isEmpty(purchasingAddressText.getText())) {
+        } else if ((!isGoodsSpecific.isChecked() || !TextUtils.isEmpty(goodsDetailText.getText())) || !isAddressSpecific.isChecked() || !TextUtils.isEmpty(purchasingAddressText.getText())) {
             if (confirm.getVisibility() == View.GONE) {
                 Animation animationUp = AnimationUtils.loadAnimation(this, R.anim.scale_up);
                 confirm.startAnimation(animationUp);
                 confirm.setVisibility(View.VISIBLE);
+                hint.setVisibility(View.GONE);
             }
         }
     }
@@ -209,12 +209,39 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
         switch (v.getId()) {
             //确定订单
             case R.id.fab:
-                getOrder();
-                Bundle data = new Bundle();
-                data.putSerializable("order", order);
-                Intent intentToOrderConfirm = new Intent(this, OrderConfirmActivity.class);
-                intentToOrderConfirm.putExtras(data);
-                startActivity(intentToOrderConfirm);
+                String goodsName = goodsNameText.getText().toString();
+                String goodsDetail = goodsDetailText.getText().toString();
+                String reward = rewardText.getText().toString();
+                String deadline = deadlineText.getText().toString();
+                if (isGoodsSpecific.isChecked() && goodsDetail.length() < 5) {
+                    showToast("商品信息不得少于5个字符");
+                } else {
+                    order.setGoodsName(goodsName);
+                    order.setGoodsDetail(goodsDetail);
+//                    order.setGoodsImage();
+                    if (order.getRewardDefault()) {
+                        order.setReward(Double.parseDouble(reward));
+                    } else {
+                        order.setReward(0.0);
+                    }
+                    order.setDeadline(deadline);
+                    order.save(new SaveListener<String>() {
+                        @Override
+                        public void done(String s, BmobException e) {
+                            if (e == null) {
+                                Bundle data = new Bundle();
+                                data.putParcelable("order", order);
+                                Intent intentToOrderConfirm = new Intent(OrderActivity.this, OrderConfirmActivity.class);
+                                intentToOrderConfirm.putExtras(data);
+                                startActivity(intentToOrderConfirm);
+                                showToast("等待接单中");
+                            } else {
+                                Log.e("error", e.getErrorCode() + "");
+                            }
+                        }
+                    });
+
+                }
                 break;
             //打开系统相册
             case R.id.goods_photo:
@@ -233,6 +260,33 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
             case R.id.choose_recipient_info:
                 Intent intentToRecipientInfo = new Intent(this, RecipientInfoActivity.class);
                 startActivityForResult(intentToRecipientInfo, CHOOSE_RECIPIENT_INFO);
+                break;
+            case R.id.deadline:
+            case R.id.choose_deadline:
+                final StringBuilder time = new StringBuilder();
+                final TimePickerDialog timePickerDialog = new TimePickerDialog(OrderActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                        String strHourOfDay = i < 10 ? "0" + i : "" + i;
+                        String strMinuteOfDay = i1 < 10 ? "0" + i1 : "" + i1;
+                        time.append(strHourOfDay + ":" + strMinuteOfDay);
+                        deadlineText.setText(time);
+                    }
+                }, 0, 0 ,true);
+                timePickerDialog.show();
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(OrderActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        time.setLength(0);
+                        time.append(String.format(Locale.CHINA, "%d-%d-%d", i, i1 + 1, i2) + "  ");
+                    }
+                }, year, month, day);
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                datePickerDialog.show();
                 break;
         }
     }
@@ -260,6 +314,7 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        User user = BmobUser.getCurrentUser(User.class);
         switch (requestCode) {
             case CHOOSE_PHOTO:
                 if (resultCode == RESULT_OK) {
@@ -286,10 +341,13 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
             case CHOOSE_RECIPIENT_INFO:
                 setFabButton();
                 if (resultCode == RESULT_OK) {
-                    if (data.hasExtra("recipient_info")) {
-                        recipientInfo = data.getParcelableExtra("recipient_info");
-                        order.setShipper(recipientInfo);
-                        recipientInfoText.setText("收货人： " + recipientInfo.getNick() + "\n联系方式： " + recipientInfo.getPhone() + "\n收货地址： " + recipientInfo.getAddress());
+                    if (data.hasExtra("position")) {
+                        int position = data.getIntExtra("position", -1);
+                        if (position >= 0) {
+                            recipientInfo = user.getRecipientInfoList().get(position);
+                            order.setRecipientInfo(recipientInfo);
+                            recipientInfoText.setText("收货人： " + recipientInfo.getName() + "\n联系方式： " + recipientInfo.getPhone() + "\n收货地址： " + recipientInfo.getAddress());
+                        }
                     }
                 }
                 break;

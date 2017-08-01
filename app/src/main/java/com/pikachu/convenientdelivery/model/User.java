@@ -1,8 +1,10 @@
 package com.pikachu.convenientdelivery.model;
 
-import android.databinding.ObservableField;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
@@ -13,45 +15,51 @@ import cn.bmob.v3.datatype.BmobFile;
 
 public class User extends BmobUser implements Parcelable {
 
-    private final ObservableField<String> nick = new ObservableField<>();
-    private final ObservableField<String> phone = new ObservableField<>();
-    private final ObservableField<BmobFile> avatar = new ObservableField<>();
-    private final ObservableField<String> city = new ObservableField<>();
-    private final ObservableField<String> address = new ObservableField<>();
-    private final ObservableField<String> intro = new ObservableField<>();
+    private String nick;
+    private String phone;
+    private BmobFile avatar;
+    private String city;
+    private String address;
+    private String intro;
+    private List<RecipientInfo> recipientInfoList;
+    private Boolean isCourier = false;
+    private Boolean isIdCardVerify = false;
+    private Boolean isAlipayVerify = false;
+    private Boolean isSesameVerify = false;
 
-    private final ObservableField<Boolean> isIdCardVerify = new ObservableField<>(false);
-    private final ObservableField<Boolean> isAlipayVerify = new ObservableField<>(false);
-    private final ObservableField<Boolean> isSesameVerify = new ObservableField<>(false);
+    public User() {
+        recipientInfoList = new ArrayList<>();
+    }
 
-    public User(){}
-
-    public User(String nick, String phone, BmobFile avatar, String city, String address, String intro, boolean isIdCardVerify, boolean isAlipayVerify, boolean isSesameVerify) {
-        this.nick.set(nick);
-        this.phone.set(phone);
-        this.avatar.set(avatar);
-        this.city.set(city);
-        this.address.set(address);
-        this.intro.set(intro);
-        this.isIdCardVerify.set(isIdCardVerify);
-        this.isAlipayVerify.set(isAlipayVerify);
-        this.isSesameVerify.set(isSesameVerify);
+    public User(Parcel in) {
+        recipientInfoList = new ArrayList<>();
+        setNick(in.readString());
+        setPhone(in.readString());
+        setAvatar((BmobFile) in.readSerializable());
+        setCity(in.readString());
+        setAddress(in.readString());
+        setIntro(in.readString());
+        setCourier(in.readByte() != 0);
+        setIdCardVerify(in.readByte() != 0);
+        setAlipayVerify(in.readByte() != 0);
+        setSesameVerify(in.readByte() != 0);
+        in.readList(getRecipientInfoList(), RecipientInfo.class.getClassLoader());
     }
 
     public String getNick() {
-        return nick.get();
+        return nick;
     }
 
     public void setNick(String nick) {
-        this.nick.set(nick);
+        this.nick = nick;
     }
 
     public String getPhone() {
-        return phone.get();
+        return phone;
     }
 
     public void setPhone(String phone) {
-        this.phone.set(phone);
+        this.phone = phone;
     }
 
     @Override
@@ -65,61 +73,88 @@ public class User extends BmobUser implements Parcelable {
     }
 
     public BmobFile getAvatar() {
-        return avatar.get();
+        return avatar;
     }
 
     public void setAvatar(BmobFile avatar) {
-        this.avatar.set(avatar);
+        this.avatar = avatar;
     }
 
     public String getCity() {
-        return city.get();
+        return city;
     }
 
     public void setCity(String city) {
-        this.city.set(city);
+        this.city = city;
     }
 
     public String getAddress() {
-        return address.get();
+        return address;
     }
 
     public void setAddress(String address) {
-        this.address.set(address);
+        this.address = address;
     }
 
     public String getIntro() {
-        return intro.get();
+        return intro;
     }
 
     public void setIntro(String intro) {
-        this.intro.set(intro);
+        this.intro = intro;
+    }
+
+    public List<RecipientInfo> getRecipientInfoList() {
+        return recipientInfoList;
+    }
+
+    public void setRecipientInfoList(List<RecipientInfo> recipientInfoList) {
+        this.recipientInfoList = recipientInfoList;
+    }
+
+    public void setRecipientInfo(int position, RecipientInfo recipientInfo) {
+        recipientInfoList.set(position, recipientInfo);
+    }
+
+    public void addRecipientInfo(RecipientInfo recipientInfo) {
+        recipientInfoList.add(recipientInfo);
+    }
+
+    public void removeRecipientInfo(int position) {
+        recipientInfoList.remove(position);
+    }
+
+    public Boolean getCourier() {
+        return isCourier;
+    }
+
+    public void setCourier(Boolean courier) {
+        isCourier = courier;
     }
 
     public Boolean getIdCardVerify() {
-        return isIdCardVerify.get();
+        return isIdCardVerify;
     }
 
     public void setIdCardVerify(Boolean idCardVerify) {
-        this.isIdCardVerify.set(idCardVerify);
+        isIdCardVerify = idCardVerify;
     }
 
     public Boolean getAlipayVerify() {
-        return isAlipayVerify.get();
+        return isAlipayVerify;
     }
 
     public void setAlipayVerify(Boolean alipayVerify) {
-        this.isAlipayVerify.set(alipayVerify);
+        isAlipayVerify = alipayVerify;
     }
 
     public Boolean getSesameVerify() {
-        return isSesameVerify.get();
+        return isSesameVerify;
     }
 
     public void setSesameVerify(Boolean sesameVerify) {
-        this.isSesameVerify.set(sesameVerify);
+        isSesameVerify = sesameVerify;
     }
-
 
     @Override
     public int describeContents() {
@@ -134,25 +169,17 @@ public class User extends BmobUser implements Parcelable {
         dest.writeString(getCity());
         dest.writeString(getAddress());
         dest.writeString(getIntro());
+        dest.writeByte((byte) (getCourier() ? 1 : 0));
         dest.writeByte((byte) (getIdCardVerify() ? 1 : 0));
         dest.writeByte((byte) (getAlipayVerify() ? 1 : 0));
         dest.writeByte((byte) (getSesameVerify() ? 1 : 0));
+        dest.writeList(getRecipientInfoList());
     }
 
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+    public static Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
         @Override
         public User createFromParcel(Parcel source) {
-            User user = new User();
-            user.setNick(source.readString());
-            user.setPhone(source.readString());
-            user.setAvatar((BmobFile) source.readSerializable());
-            user.setCity(source.readString());
-            user.setAddress(source.readString());
-            user.setIntro(source.readString());
-            user.setIdCardVerify(source.readByte() != 0);
-            user.setAlipayVerify(source.readByte() != 0);
-            user.setSesameVerify(source.readByte() != 0);
-            return user;
+            return new User(source);
         }
 
         @Override

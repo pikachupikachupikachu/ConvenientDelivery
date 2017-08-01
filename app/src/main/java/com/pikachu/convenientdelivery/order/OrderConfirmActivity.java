@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pikachu.convenientdelivery.R;
@@ -35,6 +36,14 @@ import c.b.PListener;
 public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBinding> implements View.OnClickListener {
 
     private Toolbar toolbar;
+    private TextView name;
+    private TextView phone;
+    private TextView address;
+    private TextView goodsName;
+    private TextView goodsDetail;
+    private TextView purchasingAddress;
+    private TextView reward;
+    private TextView deadline;
     private Button confirm;
     private ProgressDialog dialog;
 
@@ -58,14 +67,29 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
         toolbar = bindingView.toolbar;
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        name = bindingView.name;
+        phone = bindingView.phone;
+        address = bindingView.address;
+        goodsName = bindingView.goodsName;
+        goodsDetail = bindingView.goodsDetail;
+        purchasingAddress = bindingView.purchasingAddressText;
+        reward = bindingView.reward;
+        deadline = bindingView.deadline;
         confirm = bindingView.confirm;
         confirm.setOnClickListener(this);
     }
 
     private void initData() {
         Intent intent = getIntent();
-        order = intent.getParcelableExtra("recipient_info");
-        bindingView.setOrder(order);
+        order = intent.getParcelableExtra("order");
+        name.setText(order.getRecipientInfo().getName());
+        phone.setText(order.getRecipientInfo().getPhone());
+        address.setText(order.getRecipientInfo().getAddress());
+        goodsName.setText(order.getGoodsName());
+        goodsDetail.setText(order.getGoodsDetail());
+        purchasingAddress.setText(order.getPurchasingAddress());
+        reward.setText(Double.toString(order.getReward()));
+        deadline.setText(order.getDeadline());
     }
 
     @Override
@@ -97,7 +121,6 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
     //pay 方法
     private void payOrder() {
         showDialog("正在获取订单...\nSDK版本号:" + BP.getPaySdkVersion());
-
         try {
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -122,12 +145,14 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
             @Override
             public void succeed() {
                 Toast.makeText(OrderConfirmActivity.this, "支付成功!", Toast.LENGTH_SHORT).show();
+                //保存订单至云端
                 hideDialog();
             }
 
             // 无论成功与否,返回订单号
             @Override
             public void orderId(String orderId) {
+                showDialog("获取订单成功!请等待跳转到支付页面~");
             }
 
             // 支付失败,原因可能是用户中断支付操作,也可能是网络原因
@@ -146,6 +171,9 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
                 } else {
                     Toast.makeText(OrderConfirmActivity.this, "支付中断!", Toast.LENGTH_SHORT)
                             .show();
+                }
+                if (code == 11003) {
+                    showToast(reason);
                 }
                 hideDialog();
             }

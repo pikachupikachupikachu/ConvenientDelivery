@@ -11,8 +11,16 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
     protected OnItemClickListener<T> listener;
     private List<T> dataList = new ArrayList<>();
 
-    public void addAll(List<T> data) {
-        this.dataList.addAll(data);
+    public List<T> get() {
+        return dataList;
+    }
+
+    public void set(List<T> data) {
+        dataList = data;
+    }
+
+    public void add(T t) {
+        dataList.add(t);
     }
 
     @Override
