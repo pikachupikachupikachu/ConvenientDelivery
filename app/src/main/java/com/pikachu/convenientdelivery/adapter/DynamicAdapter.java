@@ -262,7 +262,6 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.DMyViewH
                 commentWidget.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
                         Message message = handler.obtainMessage();
                         message.what = REPLY_COMMENT;
                         message.obj = dComment;
