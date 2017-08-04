@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.BaseFragment;
+import com.pikachu.convenientdelivery.courier.CourierActivity;
 import com.pikachu.convenientdelivery.databinding.FragmentMeBinding;
 import com.pikachu.convenientdelivery.model.User;
 import com.pikachu.convenientdelivery.util.ImageLoader;
@@ -28,6 +29,7 @@ public class MeFragment extends BaseFragment<FragmentMeBinding> implements View.
     private TextView tvPub;
     private TextView tvFollows;
     private TextView tvFans;
+    private TextView tvCourier;
     private CircleImageView ivAvatar;
     private LinearLayout following;
     private LinearLayout follower;
@@ -62,6 +64,7 @@ public class MeFragment extends BaseFragment<FragmentMeBinding> implements View.
         tvFans = bindingView.tvFans;
         tvFollows = bindingView.tvFollows;
         tvPub = bindingView.tvPub;
+        tvCourier = bindingView.tvCourier;
     }
 
     private void initDatas() {
@@ -99,6 +102,7 @@ public class MeFragment extends BaseFragment<FragmentMeBinding> implements View.
         following.setOnClickListener(this);
         follower.setOnClickListener(this);
         like.setOnClickListener(this);
+        tvCourier.setOnClickListener(this);
     }
 
     @Override
@@ -120,6 +124,9 @@ public class MeFragment extends BaseFragment<FragmentMeBinding> implements View.
                 BmobUser.logOut();
                 showToast("退出登录");
                 initDatas();
+                break;
+            case R.id.tv_courier:
+                jumpTo(CourierActivity.class, false);
                 break;
         }
     }

@@ -50,4 +50,5 @@
     <color name="normal_font_color">#1A1A1A</color>
     <color name="grey">#f2f2f2</color>
     <color name="blue">#0288d1</color>
+    <color name="darkBlue">#1976d2</color>
 </resources>

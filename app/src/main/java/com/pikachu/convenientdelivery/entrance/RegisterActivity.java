@@ -174,7 +174,7 @@ public class RegisterActivity extends BaseActivity<ActivityRegisterBinding> {
     public boolean checkData() {
         phone = bindingView.etPhone.getText().toString();
         smsCode = bindingView.etSms.getText().toString();
-        nick = bindingView.etSms.getText().toString();
+        nick = bindingView.etNick.getText().toString();
         pwd = bindingView.etPwd.getText().toString();
         bindingView.tlPhone.setError(null);
         bindingView.tlSms.setError(null);

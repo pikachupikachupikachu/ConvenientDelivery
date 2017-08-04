@@ -78,15 +78,18 @@
         <activity android:name=".entrance.RegisterActivity" />
         <activity android:name=".entrance.ForgetPwdActivity" />
         <activity android:name=".entrance.SmsLoginActivity" />
-        <activity android:name=".entrance.SplashActivity">
+        <activity android:name=".entrance.SplashActivity" />
+        <!-- <service android:name="com.amap.api.location.APSService" /> -->
+        <activity android:name=".feature.PubDynamicActivity" />
+        <activity android:name=".courier.CourierActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- <service android:name="com.amap.api.location.APSService" /> -->
-        <activity android:name=".feature.PubDynamicActivity"></activity>
+        <activity android:name=".courier.CatchMapActivity" />
+        <activity android:name=".courier.NavigationActivity"></activity>
     </application>
 
 </manifest>
