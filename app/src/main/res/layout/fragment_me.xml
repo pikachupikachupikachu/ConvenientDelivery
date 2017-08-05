@@ -162,7 +162,7 @@
                     style="@style/ItemExample"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/ic_account_balance_wallet_red_400_24dp"
+                    android:drawableLeft="@drawable/bar_chart_96px"
                     android:text="账单" />
             </LinearLayout>
             <View
@@ -196,7 +196,7 @@
                     style="@style/ItemExample"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/ic_account_balance_wallet_red_400_24dp"
+                    android:drawableLeft="@drawable/document_96px"
                     android:text="我发布的订单" />
             </LinearLayout>
             <View
@@ -214,7 +214,7 @@
                     style="@style/ItemExample"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/ic_account_balance_wallet_red_400_24dp"
+                    android:drawableLeft="@drawable/clipboard_96px_1"
                     android:text="我接到的订单" />
             </LinearLayout>
             <View
@@ -232,7 +232,7 @@
                     style="@style/ItemExample"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/ic_account_balance_wallet_red_400_24dp"
+                    android:drawableLeft="@drawable/share_96px_1"
                     android:text="我的体验分享" />
             </LinearLayout>
             <View
@@ -250,7 +250,7 @@
                     style="@style/ItemExample"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/ic_account_balance_wallet_red_400_24dp"
+                    android:drawableLeft="@drawable/star_filled_96px_1"
                     android:text="我的收藏" />
             </LinearLayout>
             <View
@@ -268,7 +268,7 @@
                     style="@style/ItemExample"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/ic_account_balance_wallet_red_400_24dp"
+                    android:drawableLeft="@drawable/coins_96px_1"
                     android:text="我的积分" />
             </LinearLayout>
             <View
@@ -288,7 +288,7 @@
                     style="@style/ItemExample"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/ic_account_balance_wallet_red_400_24dp"
+                    android:drawableLeft="@drawable/conference_96px_1"
                     android:text="成为快递员" />
             </LinearLayout>
             <View
@@ -306,7 +306,7 @@
                     style="@style/ItemExample"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/ic_account_balance_wallet_red_400_24dp"
+                    android:drawableLeft="@drawable/help_96px_1"
                     android:text="帮助中心" />
             </LinearLayout>
             <View
@@ -324,7 +324,7 @@
                     style="@style/ItemExample"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/ic_account_balance_wallet_red_400_24dp"
+                    android:drawableLeft="@drawable/online_support_96px"
                     android:text="建议反馈" />
             </LinearLayout>
             <View
@@ -343,7 +343,7 @@
                     style="@style/ItemExample"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/ic_account_balance_wallet_red_400_24dp"
+                    android:drawableLeft="@drawable/exit"
                     android:text="退出登录" />
             </LinearLayout>
             <View

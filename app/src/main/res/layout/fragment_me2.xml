@@ -162,7 +162,7 @@
                     style="@style/ItemExample"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/ic_account_balance_wallet_red_400_24dp"
+                    android:drawableLeft="@drawable/bar_chart_96px"
                     android:text="账单" />
             </LinearLayout>
             <View
@@ -170,19 +170,8 @@
                 android:layout_height="1dp"
                 android:background="@color/divider"
                 android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                >
-                <TextView
-                    style="@style/ItemExample"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/ic_account_balance_wallet_red_400_24dp"
-                    android:text="余额" />
-            </LinearLayout>
+                android:layout_marginRight="8dp"/>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
@@ -207,7 +196,7 @@
                     style="@style/ItemExample"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/ic_account_balance_wallet_red_400_24dp"
+                    android:drawableLeft="@drawable/help_96px_1"
                     android:text="帮助中心" />
             </LinearLayout>
             <View
@@ -225,7 +214,7 @@
                     style="@style/ItemExample"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:drawableLeft="@drawable/ic_account_balance_wallet_red_400_24dp"
+                    android:drawableLeft="@drawable/online_support_96px"
                     android:text="建议反馈" />
             </LinearLayout>
             <View

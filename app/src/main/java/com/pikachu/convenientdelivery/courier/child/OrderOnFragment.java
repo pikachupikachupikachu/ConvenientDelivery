@@ -42,13 +42,11 @@ public class OrderOnFragment extends BaseFragment<FragmentOrderOnBinding> {
 
     private void initViews() {
         btn_navigaiton1 = bindingView.btnNavigation1;
-        btn_navigaiton2 = bindingView.btnNavigation2;
 
     }
 
     private void initListeners() {
         btn_navigaiton1.setOnClickListener(listener);
-        btn_navigaiton2.setOnClickListener(listener);
     }
 
     private PerfectClickListener listener = new PerfectClickListener() {
@@ -56,7 +54,6 @@ public class OrderOnFragment extends BaseFragment<FragmentOrderOnBinding> {
         protected void onNoDoubleClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_navigation1:
-                case R.id.btn_navigation2:
                     jumpTo(NavigationActivity.class, false);
                     break;
             }

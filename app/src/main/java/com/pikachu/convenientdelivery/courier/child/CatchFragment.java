@@ -52,12 +52,10 @@ public class CatchFragment extends BaseFragment<FragmentCatchBinding> {
 
     private void initViews(){
         btn_catch1 = bindingView.btnCatch1;
-        btn_catch2 = bindingView.btnCatch2;
-        btn_catch3 = bindingView.btnCatch3;
+
         fab = bindingView.fabMap;
         btn_catch1.setOnClickListener(listener);
-        btn_catch2.setOnClickListener(listener);
-        btn_catch3.setOnClickListener(listener);
+
         fab.setOnClickListener(listener);
     }
 
@@ -66,8 +64,6 @@ public class CatchFragment extends BaseFragment<FragmentCatchBinding> {
         protected void onNoDoubleClick(View v) {
             switch (v.getId()){
                 case R.id.btn_catch1:
-                case R.id.btn_catch2:
-                case R.id.btn_catch3:
                     showToast("我要抢单");
                     break;
                 case R.id.fab_map:

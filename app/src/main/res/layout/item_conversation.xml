@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.pikachu.convenientdelivery.db.Chat" />
+            type="com.pikachu.convenientdelivery.db.Conversation" />
 
     </data>
 

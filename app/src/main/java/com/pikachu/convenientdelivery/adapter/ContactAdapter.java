@@ -7,13 +7,13 @@ import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.adapter.BaseRecyclerViewAdapter;
 import com.pikachu.convenientdelivery.base.adapter.BaseRecyclerViewHolder;
 import com.pikachu.convenientdelivery.databinding.ItemContactBinding;
-import com.pikachu.convenientdelivery.db.Friend;
+import com.pikachu.convenientdelivery.db.Contact;
 
 /**
- * FriendAdapter
+ * ContactAdapter
  */
 
-public class FriendAdapter extends BaseRecyclerViewAdapter<Friend> {
+public class ContactAdapter extends BaseRecyclerViewAdapter<Contact> {
 
     private Context context;
 
@@ -25,16 +25,18 @@ public class FriendAdapter extends BaseRecyclerViewAdapter<Friend> {
         return new ViewHolder(parent, R.layout.item_contact);
     }
 
-    private class ViewHolder extends BaseRecyclerViewHolder<Friend, ItemContactBinding> {
+    private class ViewHolder extends BaseRecyclerViewHolder<Contact, ItemContactBinding> {
 
         ViewHolder(ViewGroup parent, int layout) {
             super(parent, layout);
         }
 
         @Override
-        public void onBindViewHolder(Friend friend, int position) {
-            if (friend != null) {
-                binding.setData(friend);
+        public void onBindViewHolder(Contact contact, int position) {
+            if (contact != null) {
+                binding.setData(contact);
+                binding.tvRecentName.setText(contact.getTv_recent_name());
+                binding.ivRecentAvatar.setImageResource(contact.getImageId());
             }
         }
 
