@@ -2,13 +2,13 @@ package com.pikachu.convenientdelivery.application;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.multidex.MultiDexApplication;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.lzy.ninegrid.NineGridView;
 import com.pikachu.convenientdelivery.R;
-
-import org.litepal.LitePalApplication;
+import com.pikachu.convenientdelivery.model.User;
 
 import cn.bmob.v3.Bmob;
 
@@ -16,9 +16,10 @@ import cn.bmob.v3.Bmob;
  * Application
  */
 
-public class MyApplication extends LitePalApplication {
+public class MyApplication extends MultiDexApplication {
 
     private static Context context;
+    private static User user;
 
     public static Context getContext() {
         return context;
@@ -28,8 +29,7 @@ public class MyApplication extends LitePalApplication {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
-        LitePalApplication.initialize(context);
-        Bmob.initialize(this,Constant.BMOB_APP_KEY);
+        Bmob.initialize(this, Constant.BMOB_APP_KEY);
         NineGridView.setImageLoader(new GlideImageLoader());
     }
 

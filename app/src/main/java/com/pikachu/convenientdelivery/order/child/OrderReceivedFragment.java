@@ -1,6 +1,5 @@
-package com.pikachu.convenientdelivery.favor.child;
+package com.pikachu.convenientdelivery.order.child;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -14,30 +13,26 @@ import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.adapter.OrderAdapter;
 import com.pikachu.convenientdelivery.base.BaseFragment;
 import com.pikachu.convenientdelivery.base.adapter.BaseRecyclerViewAdapter;
-import com.pikachu.convenientdelivery.databinding.FragmentTotalBinding;
-import com.pikachu.convenientdelivery.model.LogisticsInfo;
+import com.pikachu.convenientdelivery.databinding.FragmentOrderReceivedBinding;
 import com.pikachu.convenientdelivery.model.Order;
 import com.pikachu.convenientdelivery.model.User;
 import com.pikachu.convenientdelivery.order.OrderDetailActivity;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.UpdateListener;
 
 import static android.app.Activity.RESULT_OK;
 
 /**
- * 全部
+ * OrderReceivedFragment
  */
 
-public class TotalFragment extends BaseFragment<FragmentTotalBinding> implements SwipeRefreshLayout.OnRefreshListener, BaseRecyclerViewAdapter.OnItemClickListener<Order> {
+public class OrderReceivedFragment extends BaseFragment<FragmentOrderReceivedBinding> implements SwipeRefreshLayout.OnRefreshListener, BaseRecyclerViewAdapter.OnItemClickListener<Order> {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
@@ -51,14 +46,13 @@ public class TotalFragment extends BaseFragment<FragmentTotalBinding> implements
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         initView();
         initData();
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_total;
+        return R.layout.fragment_order_received;
     }
 
     private void initView() {
@@ -77,8 +71,7 @@ public class TotalFragment extends BaseFragment<FragmentTotalBinding> implements
     private void initData() {
         BmobQuery<Order> query = new BmobQuery<>();
         query.include("recipient,shipper");
-        query.addWhereEqualTo("status", Order.WAITING);
-        query.addWhereNotEqualTo("recipient", BmobUser.getCurrentUser(User.class));
+        query.addWhereEqualTo("shipper", BmobUser.getCurrentUser(User.class));
         query.findObjects(new FindListener<Order>() {
             @Override
             public void done(List<Order> list, BmobException e) {
@@ -99,8 +92,7 @@ public class TotalFragment extends BaseFragment<FragmentTotalBinding> implements
     public void onRefresh() {
         BmobQuery<Order> query = new BmobQuery<>();
         query.include("recipient,shipper");
-        query.addWhereEqualTo("status", Order.WAITING);
-        query.addWhereNotEqualTo("recipient", BmobUser.getCurrentUser(User.class));
+        query.addWhereEqualTo("shipper", BmobUser.getCurrentUser(User.class));
         query.findObjects(new FindListener<Order>() {
             @Override
             public void done(List<Order> list, BmobException e) {
@@ -118,36 +110,11 @@ public class TotalFragment extends BaseFragment<FragmentTotalBinding> implements
     }
 
     @Override
-    public void onClick(View view, final Order order, final int position) {
+    public void onClick(View view, Order order, int position) {
         switch (view.getId()) {
             case R.id.button1:
                 break;
             case R.id.button2:
-                final ProgressDialog dialog = new ProgressDialog(getContext());
-                dialog.setMessage("抢单中");
-                dialog.show();
-                order.setShipper(BmobUser.getCurrentUser(User.class));
-                order.setStatus(Order.PURCHASING);
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date curDate = new Date(System.currentTimeMillis());
-                order.addLogisticsInfo(new LogisticsInfo(format.format(curDate), "已接单"));
-                order.update(new UpdateListener() {
-                    @Override
-                    public void done(BmobException e) {
-                        dialog.dismiss();
-                        if (e == null) {
-                            showToast("抢单成功");
-                            orderList.set(position, order);
-                            adapter.set(orderList);
-                            adapter.notifyDataSetChanged();
-                            Intent intent = new Intent(getContext(), OrderDetailActivity.class);
-                            intent.putExtra("order", (Parcelable) order);
-                            startActivityForResult(intent, ORDER_DETAIL);
-                        } else {
-                            showToast("抢单失败");
-                        }
-                    }
-                });
                 break;
             default:
                 Intent intent = new Intent(getContext(), OrderDetailActivity.class);
@@ -156,7 +123,6 @@ public class TotalFragment extends BaseFragment<FragmentTotalBinding> implements
                 break;
         }
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -1,75 +1,32 @@
 package com.pikachu.convenientdelivery.IM.ui;
 
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.orhanobut.logger.Logger;
 import com.pikachu.convenientdelivery.IM.ui.bean.Msg;
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.adapter.ChatAdapter;
-
-import com.pikachu.convenientdelivery.adapter.OnRecyclerViewListener;
 import com.pikachu.convenientdelivery.base.BaseActivity;
 import com.pikachu.convenientdelivery.databinding.ActivityChatBinding;
-import com.pikachu.convenientdelivery.model.User;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import cn.bmob.newim.BmobIM;
-import cn.bmob.newim.bean.BmobIMAudioMessage;
-import cn.bmob.newim.bean.BmobIMConversation;
-import cn.bmob.newim.bean.BmobIMImageMessage;
-import cn.bmob.newim.bean.BmobIMLocationMessage;
-import cn.bmob.newim.bean.BmobIMMessage;
-import cn.bmob.newim.bean.BmobIMTextMessage;
-import cn.bmob.newim.bean.BmobIMVideoMessage;
-import cn.bmob.newim.core.BmobIMClient;
-import cn.bmob.newim.core.BmobRecordManager;
-import cn.bmob.newim.event.MessageEvent;
-import cn.bmob.newim.listener.MessageListHandler;
-import cn.bmob.newim.listener.MessageSendListener;
-import cn.bmob.newim.listener.MessagesQueryListener;
-import cn.bmob.newim.listener.ObseverListener;
-import cn.bmob.newim.listener.OnRecordChangeListener;
-import cn.bmob.newim.notification.BmobNotificationManager;
-import cn.bmob.v3.exception.BmobException;
-
-import static com.pikachu.convenientdelivery.R.id.btn_chat_emo;
-import static com.pikachu.convenientdelivery.R.id.btn_chat_keyboard;
-import static com.pikachu.convenientdelivery.R.id.btn_chat_send;
-import static com.pikachu.convenientdelivery.R.id.btn_chat_voice;
 
 /**
  * Created by JinBo on 2017/7/31.
  */
 
-public class ChatActivity extends BaseActivity<ActivityChatBinding> implements ObseverListener,View.OnClickListener {
+public class ChatActivity extends BaseActivity<ActivityChatBinding> implements View.OnClickListener {
    private List<Msg> msgList = new ArrayList<Msg>();
     private EditText edit_msg;
     private Button btn_chat_send;

@@ -1,9 +1,10 @@
-package com.pikachu.convenientdelivery.favor;
+package com.pikachu.convenientdelivery.order;
 
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -14,47 +15,40 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.pikachu.convenientdelivery.CityPickerActivity;
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.BaseFragment;
 import com.pikachu.convenientdelivery.base.adapter.BaseFragmentPagerAdapter;
-import com.pikachu.convenientdelivery.databinding.FragmentFavorBinding;
+import com.pikachu.convenientdelivery.databinding.FragmentOrderBinding;
 import com.pikachu.convenientdelivery.databinding.ToolbarPickCityBinding;
 import com.pikachu.convenientdelivery.db.DBManager;
-import com.pikachu.convenientdelivery.favor.child.AddressSpecificFragment;
-import com.pikachu.convenientdelivery.favor.child.GoodsSpecificFragment;
-import com.pikachu.convenientdelivery.favor.child.GoodsUnspecificFragment;
-import com.pikachu.convenientdelivery.favor.child.TotalFragment;
+import com.pikachu.convenientdelivery.order.child.OrderReceivedFragment;
+import com.pikachu.convenientdelivery.order.child.OrderReleasedFragment;
 
 import java.util.ArrayList;
 
 import static android.content.Context.SEARCH_SERVICE;
 
 /**
- * 帮忙
+ * OrderFragment
  */
 
-public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements View.OnClickListener, SearchView.OnQueryTextListener, ViewPager.OnPageChangeListener {
+public class OrderFragment extends BaseFragment<FragmentOrderBinding> implements View.OnClickListener, SearchView.OnQueryTextListener, ViewPager.OnPageChangeListener {
 
     public static final String ARGUMENT = "argument";
 
     private Toolbar toolbar;
     private ToolbarPickCityBinding toolbarPickCityBinding;
-    private TabLayout tabFavor;
-    private ViewPager vpFavor;
+    private TabLayout tabOrder;
+    private ViewPager vpOrder;
     private SearchView searchView;
+    private FloatingActionButton fab;
 
-    private ArrayList<Fragment> fragmentList = new ArrayList<>(4);
-    private ArrayList<String> titleList = new ArrayList<>(4);
-
-    public static FavorFragment newInstance(String argument) {
-        Bundle bundle = new Bundle();
-        bundle.putString(ARGUMENT, argument);
-        FavorFragment favorFragment = new FavorFragment();
-        favorFragment.setArguments(bundle);
-        return favorFragment;
-    }
+    private ArrayList<Fragment> fragmentList = new ArrayList<>(2);
+    private ArrayList<String> titleList = new ArrayList<>(2);
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -64,7 +58,23 @@ public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_favor;
+        return R.layout.fragment_order;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Animation animationUp = AnimationUtils.loadAnimation(getContext(), R.anim.scale_up);
+        fab.startAnimation(animationUp);
+        fab.setVisibility(View.VISIBLE);
+    }
+
+    public static OrderFragment newInstance(String argument) {
+        Bundle bundle = new Bundle();
+        bundle.putString(ARGUMENT, argument);
+        OrderFragment orderFragment = new OrderFragment();
+        orderFragment.setArguments(bundle);
+        return orderFragment;
     }
 
     private void initView() {
@@ -76,25 +86,23 @@ public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbarPickCityBinding = bindingView.toolbarPickCity;
         toolbarPickCityBinding.pickCity.setOnClickListener(this);
-        tabFavor = bindingView.tabFavor;
-        vpFavor = bindingView.vpFavor;
-        vpFavor.addOnPageChangeListener(this);
+        tabOrder = bindingView.tabOrder;
+        vpOrder = bindingView.vpOrder;
+        vpOrder.addOnPageChangeListener(this);
         fragmentList.clear();
-        fragmentList.add(new TotalFragment());
-        fragmentList.add(new GoodsSpecificFragment());
-        fragmentList.add(new AddressSpecificFragment());
-        fragmentList.add(new GoodsUnspecificFragment());
+        fragmentList.add(new OrderReleasedFragment());
+        fragmentList.add(new OrderReceivedFragment());
         titleList.clear();
-        titleList.add("全部");
-        titleList.add("物品明确");
-        titleList.add("地点明确");
-        titleList.add("物品待定");
+        titleList.add("我发布的订单");
+        titleList.add("我接到的订单");
         BaseFragmentPagerAdapter adapter = new BaseFragmentPagerAdapter(getChildFragmentManager(), fragmentList, titleList);
-        vpFavor.setAdapter(adapter);
-        vpFavor.setOffscreenPageLimit(2);
+        vpOrder.setAdapter(adapter);
+        vpOrder.setOffscreenPageLimit(2);
         adapter.notifyDataSetChanged();
-        tabFavor.setTabMode(TabLayout.MODE_FIXED);
-        tabFavor.setupWithViewPager(vpFavor);
+        tabOrder.setTabMode(TabLayout.MODE_FIXED);
+        tabOrder.setupWithViewPager(vpOrder);
+        fab = bindingView.fab;
+        fab.setOnClickListener(this);
     }
 
     @Override
@@ -123,6 +131,9 @@ public class FavorFragment extends BaseFragment<FragmentFavorBinding> implements
             case R.id.toolbar_pick_city:
                 Intent intent = new Intent(getActivity(), CityPickerActivity.class);
                 startActivityForResult(intent, 0);
+                break;
+            case R.id.fab:
+                OrderActivity.start(getContext());
                 break;
         }
     }

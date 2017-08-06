@@ -20,6 +20,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:elevation="8dp"
+            app:itemIconTint="@drawable/bnv_item_foreground"
+            app:itemTextColor="@drawable/bnv_item_foreground"
+            app:itemBackground="@android:color/white"
             app:menu="@menu/bottom_navigation_view" />
 
     </LinearLayout>

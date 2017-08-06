@@ -5,15 +5,11 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.adapter.PageAdapter;
 import com.pikachu.convenientdelivery.base.BaseFragment;
-import com.pikachu.convenientdelivery.databinding.FragmentOrderBinding;
+import com.pikachu.convenientdelivery.databinding.FragmentCourierOrderBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +17,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OrderFragment extends BaseFragment<FragmentOrderBinding> {
+public class OrderFragment extends BaseFragment<FragmentCourierOrderBinding> {
     private static final String TAG = "order_fragment";
 
     private ViewPager viewPager;
@@ -47,7 +43,7 @@ public class OrderFragment extends BaseFragment<FragmentOrderBinding> {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_order;
+        return R.layout.fragment_courier_order;
     }
 
     @Override

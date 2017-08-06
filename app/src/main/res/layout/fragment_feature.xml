@@ -11,7 +11,7 @@
         android:orientation="vertical"
         android:focusable="true"
         android:focusableInTouchMode="true"
-       >
+        >
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_add_black_24dp"
+            android:src="@drawable/fab_add"
             fab:fab_colorNormal="@color/colorPrimary"
             fab:fab_colorPressed="@color/colorPrimary"
             fab:fab_colorRipple="@color/colorPrimaryDark" />

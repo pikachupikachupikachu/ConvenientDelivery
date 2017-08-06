@@ -1,7 +1,5 @@
 package com.pikachu.convenientdelivery.chats;
 
-import android.app.SearchManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -11,7 +9,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,21 +19,17 @@ import android.view.animation.AnimationUtils;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.pikachu.convenientdelivery.IM.ui.ChatActivity;
 import com.pikachu.convenientdelivery.IM.ui.SearchUserActivity;
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.adapter.ContactAdapter;
 import com.pikachu.convenientdelivery.adapter.ConversationAdapter;
 import com.pikachu.convenientdelivery.base.BaseFragment;
-import com.pikachu.convenientdelivery.databinding.ActivityLoginBinding;
 import com.pikachu.convenientdelivery.databinding.FragmentChatsBinding;
 import com.pikachu.convenientdelivery.db.Contact;
 import com.pikachu.convenientdelivery.db.Conversation;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.content.Context.SEARCH_SERVICE;
 
 /**
  * 消息

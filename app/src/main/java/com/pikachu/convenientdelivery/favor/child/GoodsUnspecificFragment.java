@@ -14,7 +14,7 @@ import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.adapter.OrderAdapter;
 import com.pikachu.convenientdelivery.base.BaseFragment;
 import com.pikachu.convenientdelivery.base.adapter.BaseRecyclerViewAdapter;
-import com.pikachu.convenientdelivery.databinding.FragmentTotalBinding;
+import com.pikachu.convenientdelivery.databinding.FragmentUnspecificGoodsBinding;
 import com.pikachu.convenientdelivery.model.LogisticsInfo;
 import com.pikachu.convenientdelivery.model.Order;
 import com.pikachu.convenientdelivery.model.User;
@@ -34,10 +34,10 @@ import cn.bmob.v3.listener.UpdateListener;
 import static android.app.Activity.RESULT_OK;
 
 /**
- * 全部
+ * 物品待定
  */
 
-public class TotalFragment extends BaseFragment<FragmentTotalBinding> implements SwipeRefreshLayout.OnRefreshListener, BaseRecyclerViewAdapter.OnItemClickListener<Order> {
+public class GoodsUnspecificFragment extends BaseFragment<FragmentUnspecificGoodsBinding> implements SwipeRefreshLayout.OnRefreshListener, BaseRecyclerViewAdapter.OnItemClickListener<Order> {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
@@ -58,14 +58,13 @@ public class TotalFragment extends BaseFragment<FragmentTotalBinding> implements
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_total;
+        return R.layout.fragment_unspecific_goods;
     }
 
     private void initView() {
         swipeRefreshLayout = bindingView.swipeRefreshLayout;
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setRefreshing(true);
         recyclerView = bindingView.recyclerView;
         adapter = new OrderAdapter();
         adapter.setOnItemClickListener(this);
@@ -75,10 +74,12 @@ public class TotalFragment extends BaseFragment<FragmentTotalBinding> implements
     }
 
     private void initData() {
+        swipeRefreshLayout.setRefreshing(true);
         BmobQuery<Order> query = new BmobQuery<>();
         query.include("recipient,shipper");
         query.addWhereEqualTo("status", Order.WAITING);
         query.addWhereNotEqualTo("recipient", BmobUser.getCurrentUser(User.class));
+        query.addWhereEqualTo("isGoodsSpecific", false);
         query.findObjects(new FindListener<Order>() {
             @Override
             public void done(List<Order> list, BmobException e) {
@@ -101,6 +102,7 @@ public class TotalFragment extends BaseFragment<FragmentTotalBinding> implements
         query.include("recipient,shipper");
         query.addWhereEqualTo("status", Order.WAITING);
         query.addWhereNotEqualTo("recipient", BmobUser.getCurrentUser(User.class));
+        query.addWhereEqualTo("isGoodsSpecific", false);
         query.findObjects(new FindListener<Order>() {
             @Override
             public void done(List<Order> list, BmobException e) {

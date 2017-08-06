@@ -16,6 +16,7 @@ import java.util.List;
  * SearchResultsAdapter
  */
 public class SearchResultsAdapter extends BaseAdapter {
+
     private Context context;
     private List<Result> resultList;
 
@@ -55,29 +56,29 @@ public class SearchResultsAdapter extends BaseAdapter {
         if (view == null) {
             holder = new Holder();
             view = LayoutInflater.from(context).inflate(R.layout.adapter_inputtips, null);
-            holder.mName = (TextView) view.findViewById(R.id.name);
-            holder.mAddress = (TextView) view.findViewById(R.id.adress);
+            holder.name = (TextView) view.findViewById(R.id.name);
+            holder.address = (TextView) view.findViewById(R.id.address);
             view.setTag(holder);
-        } else{
+        } else {
             holder = (Holder)view.getTag();
         }
         if(resultList == null) {
             return view;
         }
-        holder.mName.setText(resultList.get(i).getName());
+        holder.name.setText(resultList.get(i).getName());
         String address = resultList.get(i).getAddress();
-        if(address == null || address.equals("")){
-            holder.mAddress.setVisibility(View.GONE);
-        }else{
-            holder.mAddress.setVisibility(View.VISIBLE);
-            holder.mAddress.setText(address);
+        if(address == null || address.equals("")) {
+            holder.address.setVisibility(View.GONE);
+        } else {
+            holder.address.setVisibility(View.VISIBLE);
+            holder.address.setText(address);
         }
 
         return view;
     }
 
     class Holder {
-        TextView mName;
-        TextView mAddress;
+        TextView name;
+        TextView address;
     }
 }

@@ -40,11 +40,14 @@ import android.widget.Toast;
 import com.pikachu.convenientdelivery.R;
 import com.pikachu.convenientdelivery.base.BaseActivity;
 import com.pikachu.convenientdelivery.databinding.ActivityOrderBinding;
+import com.pikachu.convenientdelivery.model.LogisticsInfo;
 import com.pikachu.convenientdelivery.model.Order;
 import com.pikachu.convenientdelivery.model.RecipientInfo;
 import com.pikachu.convenientdelivery.model.User;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import cn.bmob.v3.Bmob;
@@ -62,6 +65,7 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
     private FloatingActionButton confirm;
     private EditText goodsNameText;
     private EditText goodsDetailText;
+    private ImageButton photo;
     private ImageView goodsPhoto;
     private EditText rewardText;
     private RadioGroup rewardSelect;
@@ -144,8 +148,9 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
         goodsNameText.addTextChangedListener(this);
         goodsDetailText = bindingView.goodsDetail;
         goodsDetailText.addTextChangedListener(this);
+        photo = bindingView.photo;
+        photo.setOnClickListener(this);
         goodsPhoto = bindingView.goodsPhoto;
-        goodsPhoto.setOnClickListener(this);
         rewardText = bindingView.reward;
         rewardText.addTextChangedListener(this);
         rewardSelect = bindingView.rewardSelect;
@@ -175,7 +180,7 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
 
     private void setFabButton() {
         if (TextUtils.isEmpty(goodsNameText.getText()) || TextUtils.isEmpty(rewardText.getText()) || TextUtils.isEmpty(recipientInfoText.getText()) ||
-                TextUtils.isEmpty(deadlineText.getText()) || isGoodsSpecific.isChecked() && TextUtils.isEmpty(goodsDetailText.getText()) ||
+                TextUtils.isEmpty(deadlineText.getText()) || !isGoodsSpecific.isChecked() && TextUtils.isEmpty(goodsDetailText.getText()) ||
                 (isAddressSpecific.isChecked() && TextUtils.isEmpty(purchasingAddressText.getText()))) {
             if (confirm.getVisibility() == View.VISIBLE) {
                 Animation animationDown = AnimationUtils.loadAnimation(this, R.anim.scale_down);
@@ -183,7 +188,7 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
                 confirm.setVisibility(View.GONE);
                 hint.setVisibility(View.VISIBLE);
             }
-        } else if ((!isGoodsSpecific.isChecked() || !TextUtils.isEmpty(goodsDetailText.getText())) || !isAddressSpecific.isChecked() || !TextUtils.isEmpty(purchasingAddressText.getText())) {
+        } else if ((isGoodsSpecific.isChecked() || !TextUtils.isEmpty(goodsDetailText.getText())) || !isAddressSpecific.isChecked() || !TextUtils.isEmpty(purchasingAddressText.getText())) {
             if (confirm.getVisibility() == View.GONE) {
                 Animation animationUp = AnimationUtils.loadAnimation(this, R.anim.scale_up);
                 confirm.startAnimation(animationUp);
@@ -213,7 +218,7 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
                 String goodsDetail = goodsDetailText.getText().toString();
                 String reward = rewardText.getText().toString();
                 String deadline = deadlineText.getText().toString();
-                if (isGoodsSpecific.isChecked() && goodsDetail.length() < 5) {
+                if (!isGoodsSpecific.isChecked() && goodsDetail.length() < 5) {
                     showToast("商品信息不得少于5个字符");
                 } else {
                     order.setGoodsName(goodsName);
@@ -225,6 +230,9 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
                         order.setReward(0.0);
                     }
                     order.setDeadline(deadline);
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date curDate = new Date(System.currentTimeMillis());
+                    order.addLogisticsInfo(new LogisticsInfo(format.format(curDate), "等待接单中"));
                     order.save(new SaveListener<String>() {
                         @Override
                         public void done(String s, BmobException e) {
@@ -244,7 +252,7 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> implements
                 }
                 break;
             //打开系统相册
-            case R.id.goods_photo:
+            case R.id.photo:
                 openAlbum();
                 break;
             case R.id.purchasing_address_text:

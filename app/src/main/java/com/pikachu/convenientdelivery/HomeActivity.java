@@ -29,7 +29,7 @@ import com.pikachu.convenientdelivery.db.DBManager;
 import com.pikachu.convenientdelivery.favor.FavorFragment;
 import com.pikachu.convenientdelivery.feature.FeatureFragment;
 import com.pikachu.convenientdelivery.me.MeFragment;
-import com.pikachu.convenientdelivery.order.OrderActivity;
+import com.pikachu.convenientdelivery.order.OrderFragment;
 import com.pikachu.convenientdelivery.util.StringUtils;
 import com.pikachu.convenientdelivery.util.Utility;
 
@@ -40,6 +40,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
 
     private FeatureFragment featureFragment;
     private FavorFragment favorFragment;
+    private OrderFragment orderFragment;
     private ChatsFragment chatsFragment;
     private MeFragment meFragment;
 
@@ -117,7 +118,10 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
                 }
                 break;
             case R.id.order:
-                OrderActivity.start(this);
+                if (orderFragment == null) {
+                    orderFragment = OrderFragment.newInstance("Order Fragment");
+                    transaction.replace(R.id.content, orderFragment);
+                }
                 break;
             case R.id.chats:
                 if (chatsFragment == null) {
@@ -194,8 +198,11 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
                 transaction.replace(R.id.content, favorFragment);
                 break;
             case R.id.order:
-                OrderActivity.start(this);
-                return false;
+                if (orderFragment == null) {
+                    orderFragment = OrderFragment.newInstance("Order Fragment");
+                }
+                transaction.replace(R.id.content, orderFragment);
+                break;
             case R.id.chats:
                 if (chatsFragment == null) {
                     chatsFragment = ChatsFragment.newInstance("Chats Fragment");
@@ -223,7 +230,6 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements V
     public void onNavigationItemReselected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.feature:
-
                 break;
             case R.id.favor:
                 break;

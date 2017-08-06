@@ -66,6 +66,7 @@ public class OrderConfirmActivity extends BaseActivity<ActivityOrderConfirmBindi
     private void initView() {
         toolbar = bindingView.toolbar;
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("确认订单");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         name = bindingView.name;
         phone = bindingView.phone;

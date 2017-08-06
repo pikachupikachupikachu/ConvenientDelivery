@@ -3,6 +3,9 @@ package com.pikachu.convenientdelivery.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
@@ -30,16 +33,18 @@ public class Order extends BmobObject implements Parcelable {
     private String purchasingAddress;
     private Double goodsPrice;
     private Double deliveryFee;
+    private PathRecord pathRecord;
+    private List<LogisticsInfo> logisticsInfo;
     private Integer status;
 
-    public static  int WAITING = 0;        // 待接单
-    public static  int PURCHASING = 1;     // 购买中
-    public static  int NONDELIVERY = 2;    // 购买完成，未交给快递员
-    public static  int SHIPPING = 3;       // 快递中
-    public static  int UNCONFIRMED = 4;    // 待收货人确认
-    public static  int UNCOMMENT = 5;      // 未评价
-    public static  int FINISHED = 6;       // 完成
-    public static  int ERROR = 7;          // 订单异常
+    public static final int WAITING = 0;        // 待接单
+    public static final int PURCHASING = 1;     // 购买中
+    public static final int NONDELIVERY = 2;    // 购买完成，未交给快递员
+    public static final int SHIPPING = 3;       // 快递中
+    public static final int UNCONFIRMED = 4;    // 待收货人确认
+    public static final int UNCOMMENT = 5;      // 未评价
+    public static final int FINISHED = 6;       // 完成
+    public static final int ERROR = 7;          // 订单异常
 
     public Order() {
         createTime = getCreatedAt();
@@ -49,6 +54,8 @@ public class Order extends BmobObject implements Parcelable {
         isAddressSpecific = true;
         goodsPrice = 0.0;
         deliveryFee = 0.0;
+        pathRecord = new PathRecord();
+        logisticsInfo = new ArrayList<>();
         status = WAITING;
     }
 
@@ -62,7 +69,8 @@ public class Order extends BmobObject implements Parcelable {
         isAddressSpecific = true;
         goodsPrice = 0.0;
         deliveryFee = 0.0;
-        status = WAITING;
+        pathRecord = new PathRecord();
+        logisticsInfo = new ArrayList<>();
         setObjectId(in.readString());
         setGoodsName(in.readString());
         setGoodsDetail(in.readString());
@@ -78,6 +86,8 @@ public class Order extends BmobObject implements Parcelable {
         setPurchasingAddress(in.readString());
         setGoodsPrice(in.readDouble());
         setDeliveryFee(in.readDouble());
+        setPathRecord((PathRecord) in.readParcelable(PathRecord.class.getClassLoader()));
+        in.readList(logisticsInfo, LogisticsInfo.class.getClassLoader());
         setStatus(in.readInt());
     }
 
@@ -217,6 +227,26 @@ public class Order extends BmobObject implements Parcelable {
         this.deliveryFee = deliveryFee;
     }
 
+    public PathRecord getPathRecord() {
+        return pathRecord;
+    }
+
+    public void setPathRecord(PathRecord pathRecord) {
+        this.pathRecord = pathRecord;
+    }
+
+    public List<LogisticsInfo> getLogisticsInfo() {
+        return logisticsInfo;
+    }
+
+    public void setLogisticsInfo(List<LogisticsInfo> logisticsInfo) {
+        this.logisticsInfo = logisticsInfo;
+    }
+
+    public void addLogisticsInfo(LogisticsInfo logisticsInfo) {
+        this.logisticsInfo.add(logisticsInfo);
+    }
+
     public Integer getStatus() {
         return status;
     }
@@ -250,10 +280,12 @@ public class Order extends BmobObject implements Parcelable {
         dest.writeString(getPurchasingAddress());
         dest.writeDouble(getGoodsPrice());
         dest.writeDouble(getDeliveryFee());
+        dest.writeParcelable(getPathRecord(), flags);
+        dest.writeList(getLogisticsInfo());
         dest.writeInt(getStatus());
     }
 
-    public static  Parcelable.Creator<Order> CREATOR = new Parcelable.Creator<Order>() {
+    public static Parcelable.Creator<Order> CREATOR = new Parcelable.Creator<Order>() {
 
         @Override
         public Order createFromParcel(Parcel source) {
@@ -266,3 +298,4 @@ public class Order extends BmobObject implements Parcelable {
         }
     };
 }
+

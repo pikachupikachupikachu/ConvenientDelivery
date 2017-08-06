@@ -33,7 +33,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@mipmap/ic_launcher_round" />
+                android:src="@mipmap/logo" />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/tl_phone"
